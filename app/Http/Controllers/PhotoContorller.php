@@ -2,83 +2,94 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
+use App\Models\Person;
+use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PhotoContorller extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function index($type, $id)
     {
-        dd('hello');
+
+        $itemType = $type;
+        $type = $this->firstItem($type, $id);
+//        dd($type,$id);
+
+        return view('photos.index', [
+            'itemType' => $itemType,
+            'type' => $type,
+        ]);
+
+
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    private function firstItem($type, $id)
+    {
+        if ($type == 'company') {
+            $type = Company::query()->where('id', $id)->first();
+        } else if ($type == 'person') {
+            $type = Person::query()->where('id', $id)->first();
+        }
+        return $type;
+
+    }
+
+
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+
+    public function store(Request $request, $type, $id)
     {
-        //
+        $path = $request->file('image')->store('public/image/'.$type.'/'.$id.'/');
+
+//        $type=$this->firstItem($type,$id);
+//        dd(gettype($type));
+        if ($type=='company') {
+            $type = Company::class;
+        }else if ($type == 'person'){
+            $type = Person::class;
+        }
+
+        Photo::query()->create([
+            'image_address'=>$path,
+            'title'=>$request->get('title'),
+            'photo_type'=>$type,
+            'photo_id'=>$id,
+        ]);
+
+        return redirect()->back();
+
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Photo $photo)
     {
-        //
+        Storage::delete($photo->image_address);
+        $photo->delete();
+
+        return redirect()->back();
     }
 }

@@ -26,7 +26,23 @@ class Company extends Model
 
     public function photos()
     {
-        return $this->morphMany(Photo::class, 'photoable');
+        return $this->morphMany(Photo::class, 'photo');
+    }
+
+    public function emails()
+    {
+        return $this->morphMany(
+            Email::class,
+            'email'
+        );
+    }
+
+    public function phones()
+    {
+        return $this->morphMany(
+            Phone::class,
+            'phone'
+        );
     }
 
     public function projects()
@@ -54,21 +70,7 @@ class Company extends Model
 //                    ->exists();
     }
 
-    public function emails()
-    {
-        return $this->morphMany(
-            Email::class,
-            'email'
-        );
-    }
 
-    public function phones()
-    {
-        return $this->morphMany(
-            Phone::class,
-            'phone'
-        );
-    }
 
     public function addEmails(array $emails)
     {

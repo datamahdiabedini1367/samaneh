@@ -57,7 +57,7 @@
                                                 </thead>
                                                 <tbody>
                                                 @foreach($users as $user)
-                                                    <tr>
+                                                    <tr class="@if($user->is_active == 1) bg-success @endif">
                                                         <td>{{$user->id}}</td>
                                                         <td>{{$user->username}}</td>
                                                         <td>
@@ -65,7 +65,7 @@
                                                                   class="btn btn-primary "
                                                                   id="btn-{{$user->id}}"
                                                                   onclick="activeORDeactive({{$user->id}})"
-                                                            >فعال
+                                                            >@if($user->is_active == 1) غیرفعال @else فعال @endif
                                                             </sapn>
                                                         </td>
                                                     </tr>
@@ -112,11 +112,15 @@
                         var icon = $('#btn-' + userId).parents('tr');
                     if (data.msg == "1") {
 
-                            icon.removeClass('bg-success');
-                            btn.val("غیر فعال");
-                            btn.addClass("btn-danger");
-                            btn.removeClass("btn-primary");
+                            icon.addClass('bg-success');
+                            btn.html("غیرفعال");
+                            // btn.val("غیر فعال");
+                            // btn.addClass("btn-danger");
+                            // btn.removeClass("btn-primary");
 
+                    }else if (data.msg==0){
+                        icon.removeClass('bg-success');
+                        btn.html("فعال");
                     }
 
                 }

@@ -72,6 +72,9 @@
                                             @method('DELETE')
                                             <input type="submit" class="btn btn-sm btn-danger w-100" value="حذف">
                                         </form>
+
+                                        <a href="{{route('items.photos.index',['person',$person])}}" class="btn btn-sm btn-primary w-100">گالری تصاویر </a>
+
                                     </td>
 
                                 </tr>

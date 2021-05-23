@@ -48,7 +48,21 @@ Route::resource('projects',ProjectController::class);
 // PUT|PATCH | persons/{person}                   | persons.update           | App\Http\Controllers\PersonController@update
 // GET|HEAD  | persons/{person}                   | persons.show             | App\Http\Controllers\PersonController@show
 // GET|HEAD  | persons/{person}/edit              | persons.edit             | App\Http\Controllers\PersonController@edit
-//return redirect(route('contact.show',['type'=>'company','data'=>$company]))
+
+
+//Route::resource('items.photos', PhotoContorller::class);
+Route::get('items/{type}/photos/{id}',[PhotoContorller::class,'index'])->name('items.photos.index');
+// GET|HEAD  | items/{item}/photos                     | items.photos.index             | App\Http\Controllers\PhotoContorller@index                            | web        |
+Route::post('gallery/{type}/item/{id}',[PhotoContorller::class,'store'])->name('gallery.item.store');
+// POST      | items/{item}/photos                     | items.photos.store             | App\Http\Controllers\PhotoContorller@store                            | web        |
+// GET|HEAD  | items/{item}/photos/create              | items.photos.create            | App\Http\Controllers\PhotoContorller@create                           | web        |
+// PUT|PATCH | items/{item}/photos/{photo}             | items.photos.update            | App\Http\Controllers\PhotoContorller@update                           | web        |
+Route::delete('gallery/{photo}',[PhotoContorller::class,'destroy'])->name('items.photos.destroy');
+// DELETE    | items/{item}/photos/{photo}             | items.photos.destroy           | App\Http\Controllers\PhotoContorller@destroy                          | web        |
+// GET|HEAD  | items/{item}/photos/{photo}             | items.photos.show              | App\Http\Controllers\PhotoContorller@show                             | web        |
+// GET|HEAD  | items/{item}/photos/{photo}/edit        | items.photos.edit              | App\Http\Controllers\PhotoContorller@edit                             | web        |
+
+
 Route::get('/contact/{type}/create/{data}',[ContactController::class,'create'])->name('contact.create');
 
 

@@ -52,7 +52,7 @@ class Person extends Model
 
     public function photos()
     {
-        return $this->morphMany(Photo::class, 'photoable');
+        return $this->morphMany(Photo::class, 'photo');
     }
 
 

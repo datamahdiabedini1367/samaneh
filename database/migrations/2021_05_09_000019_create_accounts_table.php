@@ -15,9 +15,9 @@ class CreateAccountsTable extends Migration
     {
         Schema::create('accounts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('account_type_id')->constrained('account_types','id');//->comment('نوع اکانت');
+            $table->foreignId('id_type_account')->constrained('account_types','id');//->comment('نوع اکانت');
             $table->string('value')->unique()->comment('مقدار اکانت');
-            $table->morphs('item');//('برای شرکت یا شخص');
+            $table->morphs('account');//('برای شرکت یا شخص');
 
             $table->timestamps();
             $table->softDeletes();

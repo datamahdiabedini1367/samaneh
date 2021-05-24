@@ -15,7 +15,6 @@ class ContactController extends Controller
 
     public function create($type,$data)
     {
-//        dd($type,$data);
         if ($type=='company'){
             $company=Company::query()->whereId($data)->first();
             return view('contactBook.create',[
@@ -38,17 +37,7 @@ class ContactController extends Controller
 
     }
 
-    public function store(Request $request)
-    {
-    }
 
-    public function show($id)
-    {
-    }
-
-    public function edit($id)
-    {
-    }
 
     public function update($type,$data)
     {
@@ -68,7 +57,5 @@ class ContactController extends Controller
         }
     }
 
-    public function destroy($id)
-    {
-    }
+
 }

@@ -37,6 +37,17 @@ class Company extends Model
         );
     }
 
+    public function accounts()
+    {
+        return $this->morphMany(
+            Account::class,
+            'account'
+
+        );
+    }
+
+
+
     public function phones()
     {
         return $this->morphMany(

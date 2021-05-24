@@ -71,6 +71,15 @@ class Person extends Model
         );
     }
 
+    public function accounts()
+    {
+        return $this->morphMany(
+            Account::class,
+            'account'
+
+        );
+    }
+
 
     public function addEmails(array $emails)
     {
@@ -107,6 +116,7 @@ class Person extends Model
             $this->phones()->save($phone);
         }
     }
+
 
 
 

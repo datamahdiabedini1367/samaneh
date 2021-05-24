@@ -15,7 +15,7 @@ class CreateAccountTypesTable extends Migration
     {
         Schema::create('account_types', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->comment('نوع اکانت(مثلا: اینستاگرام،فیس بوک، تلگرام و ...');
+            $table->string('title')->unique()->comment('نوع اکانت(مثلا: اینستاگرام،فیس بوک، تلگرام و ...');
             $table->timestamps();
         });
     }

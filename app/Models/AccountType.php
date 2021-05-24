@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class AccountType extends Model
 {
     use HasFactory;
+    protected $table="account_types";
+    protected $guarded=['id'];
+    protected $fillable=['title'];
+
+
+
 }

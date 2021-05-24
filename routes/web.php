@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\RegisterationController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Company\CompanyPersonController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CyberSpaceController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonController;
@@ -64,6 +65,7 @@ Route::delete('gallery/{photo}',[PhotoContorller::class,'destroy'])->name('items
 
 
 Route::get('/contact/{type}/create/{data}',[ContactController::class,'create'])->name('contact.create');
+Route::get('/syberspace/{type}/create/{data}',[CyberSpaceController::class,'create'])->name('syberspace.create');
 
 
 Route::resource('users',UserController::class);
@@ -75,6 +77,19 @@ Route::resource('emails',EmailController::class);
 //| PUT|PATCH | emails/{email}                          | emails.update                  | App\Http\Controllers\EmailController@update                           | web        |
 //| DELETE    | emails/{email}                          | emails.destroy                 | App\Http\Controllers\EmailController@destroy                          | web        |
 //| GET|HEAD  | emails/{email}/edit                     | emails.edit                    | App\Http\Controllers\EmailController@edit                             | web        |
+Route::resource('accounts',CyberSpaceController::class)->except('store');
+Route::post('/accounts/{type}/{id}',[CyberSpaceController::class,'store'])->name('accounts.store');
+//|  POST      | accounts                                | accounts.store                 | App\Http\Controllers\CyberSpaceController@store                       | web        |
+//|  GET|HEAD  | accounts                                | accounts.index                 | App\Http\Controllers\CyberSpaceController@index                       | web        |
+//|  GET|HEAD  | accounts/create                         | accounts.create                | App\Http\Controllers\CyberSpaceController@create                      | web        |
+//|  DELETE    | accounts/{account}                      | accounts.destroy               | App\Http\Controllers\CyberSpaceController@destroy                     | web        |
+//|  PUT|PATCH | accounts/{account}                      | accounts.update                | App\Http\Controllers\CyberSpaceController@update                      | web        |
+//|  GET|HEAD  | accounts/{account}                      | accounts.show                  | App\Http\Controllers\CyberSpaceController@show                        | web        |
+//|  GET|HEAD  | accounts/{account}/edit                 | accounts.edit                  | App\Http\Controllers\CyberSpaceController@edit                        | web        |
+
+
+
+
 
 Route::resource('phones',PhoneController::class);
 Route::resource('companies',CompanyController::class);

@@ -9,8 +9,15 @@ use App\Models\Person;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
+
 class CyberSpaceController extends Controller
 {
+
+    public function index()
+    {
+        
+    }
     public function create($type, $data)
     {
 

@@ -52,7 +52,7 @@ Route::resource('projects',ProjectController::class);
 // GET|HEAD  | persons/{person}/edit              | persons.edit             | App\Http\Controllers\PersonController@edit
 
 
-Route::resource('accounts',CyberSpaceController::class)->except('store');
+Route::resource('accounts',CyberSpaceController::class)->except(['store','index']);
 Route::post('/accounts/{type}/{id}',[CyberSpaceController::class,'store'])->name('accounts.store');
 //Route::resource('items.photos', PhotoContorller::class);
 Route::get('items/{type}/photos/{id}',[PhotoContorller::class,'index'])->name('items.photos.index');

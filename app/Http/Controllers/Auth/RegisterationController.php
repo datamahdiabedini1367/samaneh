@@ -18,14 +18,14 @@ class RegisterationController extends Controller
 
     public function store(RegisterationRequest $request)
     {
-//        dd($request->all());
+        dd($request->all(),$request->get('is_active',false));
         $user = User::query()->create([
             'username'=>$request->get('username'),
-            'is_active'=>$request->get('is_active',0),
+            'is_active'=>$request->get('is_active',false),
             'password'=>bcrypt($request->get('password')),
         ]);
 
-        return redirect('/');
+        return redirect(route('index'));
     }
 
     public function createShowLoginForm()

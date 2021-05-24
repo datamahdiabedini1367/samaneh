@@ -25,7 +25,7 @@ class RegisterationRequest extends FormRequest
     {
         return [
             'username' => ['required', 'unique:users,username'],
-            'isactive' => ['boolean'],
+            'is_active' => ['boolean','nullable'],
             'password' => ['required', 'confirmed', 'min:6', 'max:40'],
         ];
     }

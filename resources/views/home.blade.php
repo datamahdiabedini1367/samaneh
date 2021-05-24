@@ -7,4 +7,5 @@
 @endsection
 
 @section('content')
+    شروع
 @endsection

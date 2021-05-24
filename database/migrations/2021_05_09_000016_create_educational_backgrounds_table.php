@@ -18,14 +18,12 @@ class CreateEducationalBackgroundsTable extends Migration
             $table->foreignId('person_id')->constrained('persons','id');
 
             $table->string('grade',50)->comment('مقطع تحصیلی');
-            $table->string('major',100)->comment('رشته تحصیلی');
+            $table->string('major',100)->nullable()->comment('رشته تحصیلی');
             $table->string('universityName',100)->nullable()->comment('نام دانشگاه محل تحصیلی');
             $table->text('address')->nullable()->comment('ادرس دانشگاه');
             $table->double('average')->nullable()->comment('معدل');
-
-
-
-
+            $table->string('startDate',10)->nullable()->comment("تاریخ شروع");
+            $table->string('endDate',10)->nullable()->comment("تاریخ پایان");
 
             $table->timestamps();
             $table->softDeletes();

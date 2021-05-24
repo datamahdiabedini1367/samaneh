@@ -37,6 +37,20 @@
                     @foreach($company->emails as $email)
                         {{$email->value}}<br>
                     @endforeach
+
+                    اطلاعات فضای مجازی<br>
+                    <table class="table  table-bordered w-50 table-active table-hover">
+                        <tr class="">
+                            <th >نوع اکانت</th>
+                            <th >مقدار</th>
+                        </tr>
+                    @foreach($company->accounts as $account)
+                            <tr>
+                                <td>{{$account->accountType->title}}</td>
+                                <td>{{$account->value}}</td>
+                            </tr>
+                    @endforeach
+                    </table>
                 </address>
             </div>
             <!-- /.col -->
@@ -70,7 +84,7 @@
                         <th> تاریخ شروع به کار</th>
                         <th> تاریخ اتمام همکاری</th>
                         <th> علت ترک شغل</th>
-                        <th> سمت </th>
+                        <th> سمت</th>
                         <th> بخش</th>
                     </tr>
                     </thead>
@@ -98,12 +112,11 @@
         <!-- /.row -->
 
 
-
         <!-- this row will not appear when printing -->
         <div class="row no-print">
             <div class="col-12">
                 </a>
-                <a href="{{route('companies.index')}}"  class="btn btn-default">بازگشت به صفحه لیست شرکت ها
+                <a href="{{route('companies.index')}}" class="btn btn-default">بازگشت به صفحه لیست شرکت ها
                 </a>
                 <button type="button" class="btn btn-success float-left"><i class="fa fa-download"></i>
                     خروجی EXCEL

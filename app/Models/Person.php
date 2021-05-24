@@ -18,7 +18,6 @@ class Person extends Model
 
     protected $table = 'persons';
 
-
     public function getGenderPersonAttribute()
     {
         return $this->gender ? 'مرد':'زن';
@@ -28,7 +27,6 @@ class Person extends Model
     {
         return $this->married ? 'متاهل':'مجرد';
     }
-
 
     public function getBirthdatePersonAttribute() {
         $date = convert_date($this->birthdate, 'gregorian');
@@ -55,7 +53,6 @@ class Person extends Model
         return $this->morphMany(Photo::class, 'photo');
     }
 
-
     public function emails()
     {
         return $this->morphMany(
@@ -78,6 +75,11 @@ class Person extends Model
             'account'
 
         );
+    }
+
+    public function educationals()
+    {
+        return $this->hasMany(Educational::class,'person_id','id');
     }
 
 

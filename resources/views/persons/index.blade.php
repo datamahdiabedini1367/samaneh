@@ -76,6 +76,8 @@
                                         <a href="{{route('items.photos.index',['person',$person])}}" class="btn btn-sm btn-primary w-100">گالری تصاویر </a>
                                         <a href="{{route('syberspace.create',['person',$person])}}" class="btn btn-sm btn-info w-100">ثبت اطلاعات فضای مجازی</a>
 
+                                        <a href="{{route('educational.create',$person)}}" class="btn btn-sm btn-warning w-100">سوابق تحصیلی</a>
+
 
                                     </td>
 

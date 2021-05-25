@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePhotosTable extends Migration
+class CreateIndividualsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,11 @@ class CreatePhotosTable extends Migration
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
+        Schema::create('individuals', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->nullable()->comment('عنوان عکس');
-            $table->morphs('photo');
-            $table->string('image_address')->comment('ادرس عکس در برنامه');
-
+            $table->string('title',100)->unique()->comment('نسبت');
             $table->timestamps();
-            $table->softDeletes();
-
         });
-
-
     }
 
     /**
@@ -34,6 +27,6 @@ class CreatePhotosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::dropIfExists('individuals');
     }
 }

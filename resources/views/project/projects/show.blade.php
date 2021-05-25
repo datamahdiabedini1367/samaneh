@@ -73,7 +73,14 @@
                                             <td>{{$company->name}}</td>
                                             <td>{{$company->registration_date}}</td>
                                             <td>{{$company->registration_number}}</td>
-                                            <td>{{$company->email}}</td>
+                                            @php
+                                                $emailsCompany='';
+                                                foreach($company->emails as $email){
+                                                $emailsCompany=$email->value.' - '.$emailsCompany;
+                                                }
+                                                $emailsCompany=substr($emailsCompany, 0, -2);
+                                            @endphp
+                                            <td>{{$emailsCompany}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -162,17 +169,17 @@
                         <!-- /.row -->
 
                         <!-- this row will not appear when printing -->
-                        <div class="row no-print">
-                            <div class="col-12">
-                                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i
-                                        class="fa fa-print"></i> پرینت </a>
+{{--                        <div class="row no-print">--}}
+{{--                            <div class="col-12">--}}
+{{--                                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i--}}
+{{--                                        class="fa fa-print"></i> پرینت </a>--}}
 
-                                <button type="button" class="btn btn-primary float-left ml-2"
-                                        style="margin-right: 5px;">
-                                    <i class="fa fa-download"></i> تولید PDF
-                                </button>
-                            </div>
-                        </div>
+{{--                                <button type="button" class="btn btn-primary float-left ml-2"--}}
+{{--                                        style="margin-right: 5px;">--}}
+{{--                                    <i class="fa fa-download"></i> تولید PDF--}}
+{{--                                </button>--}}
+{{--                            </div>--}}
+{{--                        </div>--}}
                     </div>
                     <!-- /.invoice -->
                 </div><!-- /.col -->

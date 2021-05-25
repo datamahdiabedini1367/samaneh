@@ -186,12 +186,6 @@
 
 @section('scripts')
     <script>
-        // $(document).ready(function () {
-        //     $("#accountTypeNew").change(function () {   // 1st
-        //         alert('run');
-        //     });
-        //
-        // });
 
         function selectSayer(selectObj) {
             // get the index of the selected option
@@ -209,34 +203,33 @@
                         '</div>'
                 )
             } else{
-                var accounttypetitle=$('#accounttypetitle')
+                var accounttypetitle=$('#accounttypetitle');
                 accounttypetitle.remove();
-
             }
             // alert("ok khodeshe");
 
             // use the selected option value to retrieve the list of items from the countryLists array
-            cList = countryLists[which];
-            // get the country select element via its known id
-            var cSelect = document.getElementById("country");
-            // remove the current options from the country select
-            var len = cSelect.options.length;
-            while (cSelect.options.length > 0) {
-                cSelect.remove(0);
-            }
-            var newOption;
-            // create new options
-            for (var i = 0; i < cList.length; i++) {
-                newOption = document.createElement("option");
-                newOption.value = cList[i];  // assumes option string and value are the same
-                newOption.text = cList[i];
-                // add the new option
-                try {
-                    cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE
-                } catch (e) {
-                    cSelect.appendChild(newOption);
-                }
-            }
+            // cList = countryLists[which];
+            // // get the country select element via its known id
+            // var cSelect = document.getElementById("country");
+            // // remove the current options from the country select
+            // var len = cSelect.options.length;
+            // while (cSelect.options.length > 0) {
+            //     cSelect.remove(0);
+            // }
+            // var newOption;
+            // // create new options
+            // for (var i = 0; i < cList.length; i++) {
+            //     newOption = document.createElement("option");
+            //     newOption.value = cList[i];  // assumes option string and value are the same
+            //     newOption.text = cList[i];
+            //     // add the new option
+            //     try {
+            //         cSelect.add(newOption);  // this will fail in DOM browsers but is needed for IE
+            //     } catch (e) {
+            //         cSelect.appendChild(newOption);
+            //     }
+            // }
         }
 
 
@@ -253,7 +246,7 @@
             var accountTypeNew = $('#accountTypeNew').val();
             var dataAccountRegister = $('#dataAccountRegister');
 
-            alert('value=>' + accountValue + '  ####accounts_type=>' + accountTypeNew + '   ####account_id=>' + dataID + '   ###account_type =>' + Item);
+            // alert('value=>' + accountValue + '  ####accounts_type=>' + accountTypeNew + '   ####account_id=>' + dataID + '   ###account_type =>' + Item);
             $.ajax({
                 type: 'post',
                 url: '/accounts',
@@ -314,145 +307,6 @@
             });
         }
 
-        function editEmail(dataID, item, id) {
-            var value = $('#update_email_' + dataID + '_' + id).val();
-            var msg = $('#value_' + dataID + '_' + id + '>#error');
-
-            // alert(dataID + ',' + item + ',' + id + ',' + value)
-            $.ajax({
-                type: 'patch',
-                url: '/emails/' + id,
-                data: {
-                    _token: "{{csrf_token()}}",
-                    value: value,
-                    dataId: dataID,
-                },
-                success: function (data) {
-                    if (data.msg !== '') {
-                        msg.addClass('show');
-                        msg.removeClass('hide');
-                        msg.text(data.msg);
-                    } else {
-                        msg.addClass('hide');
-                        msg.removeClass('show');
-                        msg.toggle('hide');
-                    }
-
-                },
-            });
-
-
-        }
-
-        function removeEmail(dataID, item, id) {
-            var recordDelete = $('#tr_' + dataID + '_' + id);
-            $.ajax({
-                type: 'delete',
-                url: '/emails/' + id,
-                data: {
-                    _token: "{{csrf_token()}}",
-                },
-                success: function (data) {
-                    if (data.msg !== '') {
-                        recordDelete.remove();
-                    }
-
-                },
-            });
-
-        }
-
-        // --------------------------
-        function registerPhone(dataID, Item) {
-
-            var tagPhoneNew = $('#phoneNew');
-
-            var phone = $('#phoneNew').val();
-            var dataPhoneRegister = $('#dataPhoneRegister');
-            // alert(Item);
-            console.log(Item);
-            $.ajax({
-                type: 'post',
-                url: '/phones',
-                data: {
-                    _token: "{{csrf_token()}}",
-                    value: phone,
-                    phoneType: Item,
-                    phoneId: dataID
-                },
-                success: function (data) {
-                    tagPhoneNew.val("");
-                    dataPhoneRegister.append('<tr id="tr_' + dataID + '_' + data.phoneInsert['id'] + '">' +
-                        '<td>' + data.count + '</td>' +
-                        '<td id="value_' + dataID + '_' + data.phoneInsert['id'] + '">' +
-                        '<input type="text" class="form-control" id="update_phone_' + dataID + '_' + data.phoneInsert['id'] + '" name="update_phone_' + dataID + '_' + data.phoneInsert['id'] + '"  value="' + data.phoneInsert['value'] + '" >' +
-                        '<div class="bg-danger hide" id="error" ></div>' +
-                        '</td>' +
-                        '<td>' +
-                        '<span  class="btn btn-success " onclick="editPhone(' + dataID + ',' + '\'{{$type}}\'' + ',' + data.phoneInsert['id'] + ')"' + '>' + '<i class="fa fa-edit"></i>' + '</span>' +
-                        '<span  class="btn btn-danger " onclick="removePhone(' + dataID + ',' + '\'{{$type}}\'' + ',' + data.phoneInsert['id'] + ')"' + '>' + '<i class="fa fa-trash-o"></i>' + '</span>' +
-                        '</td>' +
-                        '</tr>'
-                    );
-
-
-                },
-            });
-        }
-
-        function editPhone(dataID, item, id) {
-            var value = $('#update_phone_' + dataID + '_' + id).val();
-            var msg = $('#value_' + dataID + '_' + id + '>#error');
-            alert(value);
-            alert(msg);
-
-
-            alert(dataID + ',' + item + ',' + id + ',' + value)
-            $.ajax({
-                type: 'patch',
-                url: '/phones/' + id,
-                data: {
-                    _token: "{{csrf_token()}}",
-                    value: value,
-                    dataId: dataID,
-                },
-                success: function (data) {
-                    if (data.msg !== '') {
-                        msg.addClass('show');
-                        msg.removeClass('hide');
-                        msg.text(data.msg);
-                    } else {
-                        msg.addClass('hide');
-                        msg.removeClass('show');
-                        msg.toggle('hide');
-                    }
-
-                },
-            });
-
-        }
-
-        function removePhone(dataID, item, id) {
-            var recordDelete = $('#tr_' + dataID + '_' + id);
-            $.ajax({
-                type: 'delete',
-                url: '/phones/' + id,
-                data: {
-                    _token: "{{csrf_token()}}",
-                    // value: value,
-                    // dataId: dataID,
-                },
-                success: function (data) {
-                    if (data.msg !== '') {
-                        recordDelete.remove();
-                    }
-
-                },
-            });
-
-        }
-
-        // --------------------------
 
 
     </script>

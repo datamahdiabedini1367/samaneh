@@ -9,6 +9,7 @@ use App\Http\Controllers\EducationalController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonController;
+use App\Http\Controllers\PersonRelatedController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\PhotoContorller;
 use App\Http\Controllers\Project\ProjectCompanyController;
@@ -99,14 +100,14 @@ Route::resource('',CyberSpaceController::class)->except('store');
 
 
 
-
-
-
-
-
 Route::resource('phones',PhoneController::class);
 Route::resource('companies',CompanyController::class);
 Route::resource('persons',PersonController::class);
+
+
+Route::get('person/related/{person}',[PersonRelatedController::class,'create'])->name('person.related.create');
+Route::post('person/related/{person}',[PersonRelatedController::class,'store'])->name('person.related.store');
+
 Route::resource('companies.photos',PhotoContorller::class);
 
 Route::get('/checkemail/{itemId}',[EmailController::class,'check'])->name('checkemail');

@@ -20,30 +20,39 @@ class Person extends Model
 
     public function getGenderPersonAttribute()
     {
-        return $this->gender ? 'مرد':'زن';
+        return $this->gender ? 'مرد' : 'زن';
     }
 
     public function getMarriedPersonAttribute()
     {
-        return $this->married ? 'متاهل':'مجرد';
+        return $this->married ? 'متاهل' : 'مجرد';
     }
 
-    public function getBirthdatePersonAttribute() {
+    public function getBirthdatePersonAttribute()
+    {
+        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+
+        $output = str_replace($english, $persian, $this->birthdate);
         $date = convert_date($this->birthdate, 'gregorian');
 
-        return $date;
+        return $output;
     }
 
     public function companies()
     {
-        return $this->belongsToMany(Company::class, 'company_person','person_id','company_id')
-            ->withPivot(['reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section','deleted_at'])
+        return $this->belongsToMany(
+            Company::class,
+            'company_person',
+            'person_id',
+            'company_id')
+            ->withPivot(['reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
             ->withTimestamps();
     }
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class, 'person_project','person_id','project_id')
+        return $this->belongsToMany(Project::class, 'person_project', 'person_id', 'project_id')
             ->withPivot(['deleted_at'])
             ->withTimestamps();
     }
@@ -61,7 +70,8 @@ class Person extends Model
         );
     }
 
-    public function phones(){
+    public function phones()
+    {
         return $this->morphMany(
             Phone::class,
             'phone'
@@ -73,13 +83,24 @@ class Person extends Model
         return $this->morphMany(
             Account::class,
             'account'
-
         );
     }
 
     public function educationals()
     {
-        return $this->hasMany(Educational::class,'person_id','id');
+        return $this->hasMany(Educational::class, 'person_id', 'id');
+    }
+
+    public function relatedPerson()
+    {
+        return $this->belongsToMany(
+            Person::class,
+            'person_related',
+            'person_id',
+            'related_id'
+        )->withPivot(['individual_id', 'description'])
+            ->withTimestamps();
+
     }
 
 
@@ -92,7 +113,7 @@ class Person extends Model
         })->toArray();
 
         foreach ($emails as $item) {
-            $email=new Email(
+            $email = new Email(
                 ['value' => $item['value'],
                     'email_id' => $this->id,
                     'email_type' => Person::class,]
@@ -110,11 +131,11 @@ class Person extends Model
         })->toArray();
 
         foreach ($phones as $item) {
-            $phone=new Phone( [
-                    'value' => $item['value'],
-                    'phone_id' => $this->id,
-                    'phone_type' => Person::class,
-                    ]);
+            $phone = new Phone([
+                'value' => $item['value'],
+                'phone_id' => $this->id,
+                'phone_type' => Person::class,
+            ]);
             $this->phones()->save($phone);
         }
     }
@@ -129,9 +150,6 @@ class Person extends Model
 //$phonesperson=substr($phonesperson, 0, -4);
 //@endphp
 //    }
-
-
-
 
 
 }

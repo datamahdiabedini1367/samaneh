@@ -14,10 +14,15 @@ class CreatePersonRelatedTable extends Migration
     public function up()
     {
         Schema::create('person_related', function (Blueprint $table) {
-            $table->id();
+//            $table->id();
             $table->foreignId('person_id')->constrained('persons','id');
             $table->foreignId('related_id')->constrained('persons','id');
-            $table->string('relation_type')->comment('نسبت با فرد');
+            $table->foreignId('individual_id')->constrained('individuals','id')->comment('نسبت با فرد');
+
+            $table->text('description')->nullable()->comment('توضیحات');
+
+            $table->primary(['person_id','related_id']);
+
 
 //            $table->primary([ 'related_id']);
 //            $table->index(['person_id', 'related_id']);

@@ -274,6 +274,190 @@
             "autoWidth": false
         });
 
+        $('.dataTable3').DataTable({
+            // "scrollY": 300,
+            "scrollX": true,
+            "info": true,
+            "pagingType": "simple_numbers",
+            "pageLength": 3,
+            "lengthMenu": [[3,5, 10, 25, 50, 100, -1], [3,5, 10, 25, 50, 100, "همه"]],
+            "paging": true,
+            "language": {
+                "emptyTable": "هیچ داده‌ای در جدول وجود ندارد",
+                "info": "نمایش رکورد _START_ تا _END_ از _TOTAL_ رکورد",
+                // "infoEmpty": "نمایش 0 تا 0 از 0 رکورد",
+                "infoEmpty": "",
+                // "infoFiltered": "(فیلتر شده از _MAX_ رکورد)",
+                "infoFiltered": "",
+                "infoThousands": ",",
+                "lengthMenu": "نمایش _MENU_ رکورد",
+                "processing": "در حال پردازش...",
+                "search": "جستجو:",
+                "zeroRecords": "رکوردی با این مشخصات پیدا نشد",
+                "paginate": {
+                    "first": "برگه‌ی نخست",
+                    "last": "برگه‌ی آخر",
+                    "next": "بعدی",
+                    "previous": "قبلی"
+                },
+                "aria": {
+                    "sortAscending": ": فعال سازی نمایش به صورت صعودی",
+                    "sortDescending": ": فعال سازی نمایش به صورت نزولی"
+                },
+                "autoFill": {
+                    "cancel": "انصراف",
+                    "fill": "پر کردن همه سلول ها با ساختار سیستم",
+                    "fillHorizontal": "پر کردن سلول های افقی",
+                    "fillVertical": "پرکردن سلول های عمودی",
+                    "info": "نمونه اطلاعات پرکردن خودکار"
+                },
+                "buttons": {
+                    "collection": "مجموعه",
+                    "colvis": "قابلیت نمایش ستون",
+                    "colvisRestore": "بازنشانی قابلیت نمایش",
+                    "copy": "کپی",
+                    "copySuccess": {
+                        "1": "یک رکورد داخل حافظه کپی شد",
+                        "_": "%ds رکورد داخل حافظه کپی شد"
+                    },
+                    "copyTitle": "کپی در حافظه",
+                    "excel": "اکسل",
+                    "pageLength": {
+                        "-1": "نمایش همه رکورد‌ها",
+                        "1": "نمایش 1 رکورد",
+                        "_": "نمایش %d رکورد"
+                    },
+                    "print": "چاپ",
+                    "copyKeys": "برای کپی داده جدول در حافظه سیستم کلید های ctrl یا ⌘ + C را فشار دهید",
+                    "csv": "فایل CSV",
+                    "pdf": "فایل PDF"
+                },
+                "searchBuilder": {
+                    "add": "افزودن شرط",
+                    "button": {
+                        "0": "جستجو ساز",
+                        "_": "جستجوساز (%d)"
+                    },
+                    "clearAll": "خالی کردن همه",
+                    "condition": "شرط",
+                    "conditions": {
+                        "date": {
+                            "after": "بعد از",
+                            "before": "بعد از",
+                            "between": "میان",
+                            "empty": "خالی",
+                            "equals": "برابر",
+                            "not": "نباشد",
+                            "notBetween": "میان نباشد",
+                            "notEmpty": "خالی نباشد"
+                        },
+                        "number": {
+                            "between": "میان",
+                            "empty": "خالی",
+                            "equals": "برابر",
+                            "gt": "بزرگتر از",
+                            "gte": "برابر یا بزرگتر از",
+                            "lt": "کمتر از",
+                            "lte": "برابر یا کمتر از",
+                            "not": "نباشد",
+                            "notBetween": "میان نباشد",
+                            "notEmpty": "خالی نباشد"
+                        },
+                        "string": {
+                            "contains": "حاوی",
+                            "empty": "خالی",
+                            "endsWith": "به پایان می رسد با",
+                            "equals": "برابر",
+                            "not": "نباشد",
+                            "notEmpty": "خالی نباشد",
+                            "startsWith": "شروع  شود با"
+                        },
+                        "array": {
+                            "equals": "برابر",
+                            "empty": "خالی",
+                            "contains": "حاوی",
+                            "not": "نباشد",
+                            "notEmpty": "خالی نباشد",
+                            "without": "بدون"
+                        }
+                    },
+                    "data": "اطلاعات",
+                    "deleteTitle": "حذف عنوان",
+                    "logicAnd": "و",
+                    "logicOr": "یا",
+                    "title": {
+                        "0": "جستجو ساز",
+                        "_": "جستجوساز (%d)"
+                    },
+                    "value": "مقدار"
+                },
+                "select": {
+                    "1": "%d رکورد انتخاب شد",
+                    "_": "%d رکورد انتخاب شد",
+                    "cells": {
+                        "1": "1 سلول انتخاب شد",
+                        "_": "%d سلول انتخاب شد"
+                    },
+                    "columns": {
+                        "1": "یک ستون انتخاب شد",
+                        "_": "%d ستون انتخاب شد"
+                    },
+                    "rows": {
+                        "0": "%d رکورد انتخاب شد",
+                        "1": "1رکورد انتخاب شد",
+                        "_": "%d  انتخاب شد"
+                    }
+                },
+                "thousands": ",",
+                "decimal": "اعشاری",
+                "searchPanes": {
+                    "clearMessage": "همه را پاک کن",
+                    "collapse": {
+                        "0": "صفحه جستجو",
+                        "_": "صفحه جستجو (٪ d)"
+                    },
+                    "count": "{total}",
+                    "countFiltered": "{shown} ({total})",
+                    "emptyPanes": "صفحه جستجو وجود ندارد",
+                    "loadMessage": "در حال بارگیری صفحات جستجو ...",
+                    "title": "فیلترهای فعال - %d"
+                },
+                "loadingRecords": "در حال بارگذاری...",
+                "datetime": {
+                    "previous": "قبلی",
+                    "next": "بعدی",
+                    "hours": "ساعت",
+                    "minutes": "دقیقه",
+                    "seconds": "ثانیه",
+                    "amPm": [
+                        "صبح",
+                        "عصر"
+                    ]
+                },
+                "editor": {
+                    "close": "بستن",
+                    "create": {
+                        "button": "جدید",
+                        "title": "ثبت جدید",
+                        "submit": "ایجــاد"
+                    },
+                    "edit": {
+                        "button": "ویرایش",
+                        "title": "ویرایش",
+                        "submit": "به‌روزرسانی"
+                    },
+                    "remove": {
+                        "button": "حذف",
+                        "title": "حذف",
+                        "submit": "حذف"
+                    },
+                    "multi": {
+                        "restore": "واگرد"
+                    }
+                }
+            },
+        });
+
         ClassicEditor.create(document.querySelector('#editor1')).then(function (editor) {
                 // The editor instance
             })

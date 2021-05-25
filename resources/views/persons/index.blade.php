@@ -77,6 +77,7 @@
                                         <a href="{{route('syberspace.create',['person',$person])}}" class="btn btn-sm btn-info w-100">ثبت اطلاعات فضای مجازی</a>
 
                                         <a href="{{route('educational.create',$person)}}" class="btn btn-sm btn-warning w-100">سوابق تحصیلی</a>
+                                        <a href="{{route('person.related.create',$person)}}" class="btn btn-sm btn-light w-100">ثبت اطلاعات افراد مرتبط</a>
 
 
                                     </td>

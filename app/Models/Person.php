@@ -119,6 +119,17 @@ class Person extends Model
         }
     }
 
+//    public function getPhonesAttribute(){
+//
+//@php
+//$phonesperson='';
+//foreach($person->phones as $phone){
+//$phonesperson=$phone->value.' - '.$phonesperson;
+//}
+//$phonesperson=substr($phonesperson, 0, -4);
+//@endphp
+//    }
+
 
 
 

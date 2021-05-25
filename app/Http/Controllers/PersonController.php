@@ -87,7 +87,7 @@ class PersonController extends Controller
             'languageUse'=>$request->get('languageUse', $person->languageUse),
         ]);
 
-        return redirect(route('persons.index'));
+        return redirect(route('contact.create', ['type' => 'person', 'data' => $person]));
     }
 
 

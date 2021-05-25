@@ -74,7 +74,7 @@
                                             <td>{{$company->registration_date}}</td>
                                             <td>{{$company->registration_number}}</td>
                                             <td>{{$company->email}}</td>
-                                    </tr>
+                                        </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
@@ -113,7 +113,14 @@
                                             <td>{{$person->lastName}}</td>
                                             <td>{{$person->fatherName}}</td>
                                             <td>{{$person->nationalCode}}</td>
-                                            <td>باید ایجاد شود</td>
+                                            @php
+                                                $phonesperson='';
+                                                foreach($person->phones as $phone){
+                                                $phonesperson=$phone->value.' - '.$phonesperson;
+                                                }
+                                                $phonesperson=substr($phonesperson, 0, -2);
+                                            @endphp
+                                            <td>{{$phonesperson}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>
@@ -138,14 +145,12 @@
                                     <thead>
                                     <tr>
                                         <th>نام کاربری</th>
-                                        <th>ایمیل</th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     @foreach($project->users as $user)
                                         <tr>
-                                            <td>{{$user->name}}</td>
-                                            <td>{{$user->email}}</td>
+                                            <td>{{$user->username}}</td>
                                         </tr>
                                     @endforeach
                                     </tbody>

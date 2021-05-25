@@ -30,7 +30,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::get('/',[HomeController::class,'index'])->name('index');
+
 
 //----------------- authentication ---------------------
 Route::get('/signup' ,[RegisterationController::class,'create'])->name('signup');
@@ -133,6 +133,8 @@ Route::post('/project/{project}/person/{person}',[ProjectPersonController::class
 Route::get('/project/{project}/company/assign',[ProjectCompanyController::class,'assign'])->name('projects.companies.assign');
 Route::post('/project/{project}/company/{company}',[ProjectCompanyController::class,'store'])->name('projects.companies.storeAssign');
 //------------end assign project to company/user/person ---------------
+
+Route::get('/',[HomeController::class,'index'])->name('index');
 
 
 

@@ -18,10 +18,10 @@ class RegisterationController extends Controller
 
     public function store(RegisterationRequest $request)
     {
-        dd($request->all(),$request->get('is_active',false));
+//        dd($request->all(),$request->get('is_active',0));
         $user = User::query()->create([
             'username'=>$request->get('username'),
-            'is_active'=>$request->get('is_active',false),
+            'is_active'=>$request->get('is_active',0),
             'password'=>bcrypt($request->get('password')),
         ]);
 

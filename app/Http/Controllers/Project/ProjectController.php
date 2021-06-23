@@ -6,15 +6,23 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ProjectStoreRequest;
 use App\Http\Requests\ProjectUpdateRequest;
 use App\Models\Company;
+use App\Models\Permission;
 use App\Models\Person;
 use App\Models\project;
 use App\Models\User;
 
 class ProjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+
+    }
 
     public function index()
     {
+        $this->authorize('isAccess',Permission::query()->where('title','list_projects')->first());
+
         return view('project.projects.index', [
             'projects' => Project::all(),
         ]);
@@ -23,6 +31,8 @@ class ProjectController extends Controller
 
     public function create()
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_project')->first());
+
         return view('project.projects.create', [
 //            'users' => User::all(),
 //            'companies' => Company::all(),
@@ -33,6 +43,8 @@ class ProjectController extends Controller
 
     public function store(ProjectStoreRequest $request)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_project')->first());
+
         $project = Project::query()->create([
             'name' => $request->get('name'),
             'startDate' => $request->get('startDate'),
@@ -49,6 +61,8 @@ class ProjectController extends Controller
 
     public function edit(Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','edit_project')->first());
+
         return view('project.projects.edit', [
             'project' => $project,
 //            'users' => User::all(),
@@ -59,6 +73,7 @@ class ProjectController extends Controller
 
     public function show(Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','show_detail_project')->first());
 
         return view('project.projects.show', [
             'project'=>$project,
@@ -68,6 +83,8 @@ class ProjectController extends Controller
 
     public function update(ProjectUpdateRequest $request, Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','edit_project')->first());
+
         $project->update([
             'name' => $request->get('name', $project->name),
             'startDate' => $request->get('startDate', $project->startDate),
@@ -86,6 +103,8 @@ class ProjectController extends Controller
 
     public function destroy(Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','delete_project')->first());
+
         $project->persons()->detach();
         $project->companies()->detach();
         $project->users()->detach();

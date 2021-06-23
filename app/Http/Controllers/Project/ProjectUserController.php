@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Project;
 use App\Models\User;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,6 +13,8 @@ class ProjectUserController extends Controller
 {
     public function assign(Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','assign_user_to_project')->first());
+
         return view('project.projectUser.assign',[
             'project'=>$project,
             'users'=>User::all(),
@@ -20,6 +23,8 @@ class ProjectUserController extends Controller
 
     public function store(Project $project,User $user)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','assign_user_to_project')->first());
+
 //        dd('run store assign user');
         $isUserAssignBefore = $project->users()
                                       ->where('user_id',$user->id)

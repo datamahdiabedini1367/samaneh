@@ -41,66 +41,69 @@
                         <!-- /.card-header -->
                         <!-- form start -->
 
-                            <div class="row px-4">
-                                <div class="col-sm-12">
-                                    <div class="card ">
-                                        <div class="card-body pt-5" >
-                                            <table  class="table table-bordered table-striped dataTable1" >
-                                                <thead>
-                                                <tr>
-                                                    {{--                                <th>#</th>--}}
-                                                    <th>نام</th>
-                                                    <th>نام خانوادگی</th>
-                                                    <th>نام پدر</th>
-                                                    <th>تاریخ تولد</th>
-                                                    <th>محل تولد</th>
-                                                    <th>جنسیت</th>
-                                                    <th>کد ملی</th>
-                                                    <th>انتخاب</th>
+                        <div class="row px-4">
+                            <div class="col-sm-12">
+                                <div class="card ">
+                                    <div class="card-body pt-5">
+                                        <table class="table table-bordered table-striped dataTable1">
+                                            <thead>
+                                            <tr>
+                                                {{--                                <th>#</th>--}}
+                                                <th>نام</th>
+                                                <th>نام خانوادگی</th>
+                                                <th>نام پدر</th>
+                                                <th>تاریخ تولد</th>
+                                                <th>محل تولد</th>
+                                                <th>جنسیت</th>
+                                                <th>کد ملی</th>
+                                                <th>انتخاب</th>
 
-                                                </tr>
-                                                </thead>
-                                                <tbody>
-                                                @foreach($persons as $person)
-                                                    <tr class="@if($project->hasPerson($person)) bg-success @endif ">
-                                                        {{--                                    <td>{{$person->id}}</td>--}}
-                                                        <td>{{$person->firstName}}</td>
-                                                        <td>{{$person->lastName}}</td>
-                                                        <td>{{$person->fatherName}}</td>
-                                                        <td>{{$person->birthdate}}</td>
-                                                        <td>{{$person->birthdatePlace}}</td>
-                                                        <td>{{$person->gender_person}}</td>
-                                                        <td>{{$person->nationalCode}}</td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            @foreach($persons as $person)
+                                                <tr class="@if($project->hasPerson($person)) bg-success @endif ">
+                                                    {{--                                    <td>{{$person->id}}</td>--}}
+                                                    <td>{{$person->firstName}}</td>
+                                                    <td>{{$person->lastName}}</td>
+                                                    <td>{{$person->fatherName}}</td>
+                                                    <td>{{$person->birthdate}}</td>
+                                                    <td>{{$person->birthdatePlace}}</td>
+                                                    <td>{{$person->gender_person}}</td>
+                                                    <td>{{$person->nationalCode}}</td>
 
-                                                        <td>
+                                                    <td>
+                                                        @can('isAccess',\App\Models\Permission::query()->where('title','create_person_project')->first())
+
                                                             <button name="persons[]"
                                                                     class="personSelected btn "
                                                                     id="btn-{{$person->id}}"
                                                                     onclick="selectPersonForProject({{$project->id}},{{$person->id}})"
-                                                            >انتخاب</button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                                <tfoot>
-                                                <tr>
-                                                    {{--                                <th>#</th>--}}
-                                                    <th>نام</th>
-                                                    <th>نام خانوادگی</th>
-                                                    <th>نام پدر</th>
-                                                    <th>تاریخ تولد</th>
-                                                    <th>محل تولد</th>
-                                                    <th>جنسیت</th>
-                                                    <th>کد ملی</th>
-                                                    <th> </th>
+                                                            >انتخاب
+                                                            </button>
+                                                        @endcan
+                                                    </td>
                                                 </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
+                                            @endforeach
+                                            </tbody>
+                                            <tfoot>
+                                            <tr>
+                                                {{--                                <th>#</th>--}}
+                                                <th>نام</th>
+                                                <th>نام خانوادگی</th>
+                                                <th>نام پدر</th>
+                                                <th>تاریخ تولد</th>
+                                                <th>محل تولد</th>
+                                                <th>جنسیت</th>
+                                                <th>کد ملی</th>
+                                                <th></th>
+                                            </tr>
+                                            </tfoot>
+                                        </table>
                                     </div>
                                 </div>
                             </div>
-
+                        </div>
 
 
                         </form>
@@ -115,16 +118,18 @@
 
 
     <script>
-        function selectPersonForProject(projectId,personId){
+        @can('isAccess',\App\Models\Permission::query()->where('title','create_person_project')->first())
+
+        function selectPersonForProject(projectId, personId) {
             $.ajax({
                 type: 'post',
-                url:'/project/'+projectId+'/person/'+personId,
+                url: '/project/' + projectId + '/person/' + personId,
                 data: {
                     _token: "{{csrf_token()}}",
                 },
                 success: function (data) {
                     console.log(data);
-                    var icon = $('#btn-'+personId).parents('tr');
+                    var icon = $('#btn-' + personId).parents('tr');
 
                     if (data.count_person !== '') {
                         if (icon.hasClass('bg-success')) {
@@ -140,6 +145,8 @@
 
             })
         }
+
+        @endcan
     </script>
 @endsection
 

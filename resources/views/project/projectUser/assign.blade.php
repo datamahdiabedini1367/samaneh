@@ -8,7 +8,9 @@
 
 
 @section('content')
-    <section class="content-header">
+    @can('isAccess',\App\Models\Permission::query()->where('title','assign_user_to_project')->first())
+
+        <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
@@ -40,7 +42,8 @@
                         </div>
 
 
-                            <div class="row px-4">
+
+                        <div class="row px-4">
                                 <div class="col-sm-12">
                                     <div class="card ">
                                         <div class="card-body pt-5" >
@@ -78,6 +81,7 @@
                                     </div>
                                 </div>
                             </div>
+
 
 
 {{--                            <input type="submit" value="ثبت">--}}
@@ -122,6 +126,7 @@
                 })
         }
     </script>
+    @endcan
 
 @endsection
 

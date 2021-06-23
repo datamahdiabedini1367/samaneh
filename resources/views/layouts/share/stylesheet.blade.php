@@ -1,6 +1,6 @@
 
     <!-- Font Awesome fgds-->
-    <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/plugins/font-awesome/css/font-awesome.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="/css/ionicons.min.css">
     <!-- Theme style -->

@@ -2,20 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ChangePasswordRequest;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
 
+
     public function __construct()
     {
-//        $this->authorize('auth');
+//        $this->middleware(CheckPermission::class);
+//        $this->authorizeResource(User::class);
+        $this->middleware('auth');
     }
 
     public function index()
     {
+        $this->authorize('isAccess', Permission::query()->where('title', 'my_project')->first());
+
         $user = auth()->user();
         return view('users.myProjects', [
             'projects' => $user->projects()->get(),
@@ -24,79 +32,84 @@ class UserController extends Controller
 
     public function listUser()
     {
+        $this->authorize('isAccess', Permission::query()->where('title', 'list_users')->first());
+
         return view('users.index', [
             'users' => User::all(),
+            'roles' => Role::all(),
         ]);
     }
 
 
     public function changeActivation(User $user)
     {
+        $this->authorize('isAccess', Permission::query()->where('title', 'active_user')->first());
 
         if ($user->is_active == 0) {
-            $user_update = User::query()->where('id',$user->id)->update(['is_active' => 1]);
+            $user_update = User::query()->where('id', $user->id)->update(['is_active' => 1]);
 
             return response(['msg' => 1], 200);
         } else if ($user->is_active == 1) {
-            $user_update = User::query()->where('id',$user->id)->update(['is_active' => 0]);
+            $user_update = User::query()->where('id', $user->id)->update(['is_active' => 0]);
 
             return response(['msg' => 0], 200);
         }
     }
 
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function changeRole(User $user, Role $role)
     {
-        //
-    }
+        $this->authorize('isAccess', Permission::query()->where('title', 'change_role')->first());
 
+        $user->update([
+            'role_id' => $role->id,
+        ]);
 
-    public function show(User $user)
-    {
+        return response(['msg' => 'ok'], 200);
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
+    public function myproject()
+    {
+        $this->authorize('isAccess', Permission::query()->where('title', 'my_project')->first());
+
+        $user = auth()->user();
+
+        return view('users.myproject', [
+            'projects' => $user->projects,
+        ]);
+    }
+
+
     public function edit(User $user)
     {
-        //
+        return view('users.edit', [
+            'user' => $user,
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, User $user)
+
+    public function update(ChangePasswordRequest $request, User $user)
     {
-        //
+        if (auth()->user()->id != User::query()->where('username', $request->get('username'))->first()->id) {
+            abort(403);
+        }
+        if (!Hash::check($request->get('password-old'), $user->password)) {
+            return back()->withErrors('رمز عبور قبلی اشتباه وارد شده است');
+        }
+        $user->update([
+            'password'=> bcrypt($request->get('password')),
+        ]);
+        return redirect(route('index'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(User $user)
     {
-        //
+        $this->authorize('isAccess', Permission::query()->where('title', 'delete_user')->first());
+        $user->projects()->detach();
+
+        $user->delete();
+        return redirect(route('users.index'));
     }
 }

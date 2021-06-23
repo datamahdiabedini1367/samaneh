@@ -16,6 +16,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
+        'role_id',
         'username',
         'is_active',
         'password',
@@ -38,6 +39,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Project::class,'project_user')
                     ->withPivot(['deleted_at'])
                     ->withTimestamps();
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
 

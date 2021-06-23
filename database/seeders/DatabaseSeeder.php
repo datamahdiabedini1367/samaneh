@@ -22,7 +22,9 @@ class DatabaseSeeder extends Seeder
             CompaniesTableSeeder::class,
             PersonsTableSeeder::class,
             IndividualTableSeeder::class,
-            AccountTypeTableSeeder::class
+            AccountTypeTableSeeder::class,
+            PermissonTableSeeder::class,
+            AdminSeeder::class
         ]);
         Schema::enableForeignKeyConstraints();
     }

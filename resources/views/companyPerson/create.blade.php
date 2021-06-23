@@ -19,6 +19,7 @@
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
+                        @can('isAccess',\App\Models\Permission::query()->where('title','create_person_company')->first())
                         <form role="form" method="post" action="{{route('companies.persons.store',$company)}}"
                               id="store_project">
                             @csrf
@@ -147,6 +148,7 @@
                                 <button type="submit" class="btn btn-primary">ثبت</button>
                             </div>
                         </form>
+                        @endcan
                     </div>
                     <!-- /.card-body -->
                 </div>

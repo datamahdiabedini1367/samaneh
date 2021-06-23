@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Project;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use App\Models\Project;
 use App\Models\Person;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ class ProjectPersonController extends Controller
 {
     public function assign(Project $project)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_person_project')->first());
+
         return view('project.projectPerson.assign',[
             'project'=>$project,
             'persons'=>Person::all(),
@@ -20,6 +23,8 @@ class ProjectPersonController extends Controller
 
     public function store(Project $project,Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_person_project')->first());
+
         $isPersonAssignBefore = $project->persons()
                                       ->where('person_id',$person->id)
                                       ->exists();

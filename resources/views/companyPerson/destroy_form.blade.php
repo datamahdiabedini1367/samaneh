@@ -25,7 +25,7 @@
                     <strong>{{$company->name}}</strong><br>
                     آدرس:<br>
                     {{$company->address}}<br>
-                    تلفن : (804) 123-5432<br>
+                    <br>
                     ایمیل : {{$company->email}}
                 </address>
             </div>
@@ -79,11 +79,14 @@
                             <th>{{$person->pivot->semat}}</th>
                             <th>{{$person->pivot->section}}</th>
                             <th>
-                                <form action="{{route('companies.persons.destroy',[$company,$person] )}}" method="post">
-                                    @csrf
-                                    @method('DELETE')
-                                    <input type="submit" value="حذف" class="btn btn-danger">
-                                </form>
+                                @can('isAccess',\App\Models\Permission::query()->where('title','delete_person_company')->first())
+                                    <form action="{{route('companies.persons.destroy',[$company,$person] )}}"
+                                          method="post">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="submit" value="حذف" class="btn btn-danger">
+                                    </form>
+                                @endcan
                             </th>
                         </tr>
                     @endforeach

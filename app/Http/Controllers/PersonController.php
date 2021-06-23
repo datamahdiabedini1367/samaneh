@@ -4,14 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PersonStoreRequest;
 use App\Http\Requests\PersonUpdateRequest;
+use App\Models\Permission;
 use App\Models\Person;
 use Illuminate\Http\Request;
 
 class PersonController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function index()
     {
+        $this->authorize('isAccess',Permission::query()->where('title','list_persons')->first());
+
         return view('persons.index', [
             'persons' => Person::all(),
         ]);
@@ -20,6 +27,8 @@ class PersonController extends Controller
 
     public function create()
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_person')->first());
+
         return view('persons.create');
 
     }
@@ -27,6 +36,8 @@ class PersonController extends Controller
 
     public function store(PersonStoreRequest $request)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_person')->first());
+
         $person =Person::query()->create([
             'firstName'=>$request->get('firstName'),
             'nikeName'=>$request->get('nikeName'),
@@ -60,6 +71,8 @@ class PersonController extends Controller
 
     public function edit(Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','edit_person')->first());
+
         return view('persons.edit',[
             'person'=>$person
         ]);
@@ -68,6 +81,8 @@ class PersonController extends Controller
 
     public function update(PersonUpdateRequest $request, Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','edit_person')->first());
+
         $person->update([
             'firstName'=>$request->get('firstName', $person->firstName),
             'nikeName'=>$request->get('nikeName', $person->nikeName),
@@ -93,6 +108,7 @@ class PersonController extends Controller
 
     public function destroy(Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','delete_person')->first());
 
         $person->delete();
         return redirect(route('persons.index'));

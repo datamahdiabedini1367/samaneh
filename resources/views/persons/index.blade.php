@@ -14,7 +14,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-left">
                         <li class="breadcrumb-item"><a href="#">خانه</a></li>
-                        <li class="breadcrumb-item active"> لیست افراد </li>
+                        <li class="breadcrumb-item active"> لیست افراد</li>
                     </ol>
                 </div>
             </div>
@@ -32,16 +32,20 @@
                                 <h3 class="card-title">افراد</h3>
                             </div>
                             <div class="col-sm-6">
-                                <a href="{{route('persons.create')}}" class="btn btn-sm btn-primary"> ثبت فرد جدید</a>
+                                @can('isAccess',\App\Models\Permission::query()->where('title','create_person')->first())
+                                    <a href="{{route('persons.create')}}" class="btn btn-sm btn-primary"> ثبت فرد
+                                        جدید</a>
+                                @endcan
+
                             </div>
                         </div>
                     </div>
                     <!-- /.card-header -->
                     <div class="card-body">
-                        <table  class="table table-bordered table-striped dataTable1" >
+                        <table class="table table-bordered table-striped dataTable1">
                             <thead>
                             <tr>
-{{--                                <th>#</th>--}}
+                                {{--                                <th>#</th>--}}
                                 <th>نام</th>
                                 <th>نام خانوادگی</th>
                                 <th>نام پدر</th>
@@ -56,7 +60,7 @@
                             <tbody>
                             @foreach($persons as $person)
                                 <tr>
-{{--                                    <td>{{$person->id}}</td>--}}
+                                    {{--                                    <td>{{$person->id}}</td>--}}
                                     <td>{{$person->firstName}}</td>
                                     <td>{{$person->lastName}}</td>
                                     <td>{{$person->fatherName}}</td>
@@ -66,18 +70,39 @@
                                     <td>{{$person->nationalCode}}</td>
 
                                     <td>
-                                        <a href="{{route('persons.edit',$person)}}" class="btn btn-sm btn-success w-100">ویرایش</a>
-                                        <form action="{{route('persons.destroy',$person)}}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <input type="submit" class="btn btn-sm btn-danger w-100" value="حذف">
-                                        </form>
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','edit_person')->first())
+                                            <a href="{{route('persons.edit',$person)}}"
+                                               class="btn btn-sm btn-success w-100">ویرایش</a>
+                                        @endcan
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','delete_person')->first())
+                                            <form action="{{route('persons.destroy',$person)}}" method="post">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input type="submit" class="btn btn-sm btn-danger w-100" value="حذف">
+                                            </form>
+                                        @endcan
 
-                                        <a href="{{route('items.photos.index',['person',$person])}}" class="btn btn-sm btn-primary w-100">گالری تصاویر </a>
-                                        <a href="{{route('syberspace.create',['person',$person])}}" class="btn btn-sm btn-info w-100">ثبت اطلاعات فضای مجازی</a>
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','create_picture_person')->first())
+                                                <a href="{{route('items.photos.index',['person',$person])}}"
+                                                   class="btn btn-sm btn-primary w-100">گالری تصاویر </a>
+                                        @endcan
 
-                                        <a href="{{route('educational.create',$person)}}" class="btn btn-sm btn-warning w-100">سوابق تحصیلی</a>
-                                        <a href="{{route('person.related.create',$person)}}" class="btn btn-sm btn-light w-100">ثبت اطلاعات افراد مرتبط</a>
+
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','create_syberspace_person')->first())
+                                                <a href="{{route('syberspace.create',['person',$person])}}"
+                                                   class="btn btn-sm btn-info w-100">ثبت اطلاعات فضای مجازی</a>
+                                        @endcan
+
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','create_educational')->first())
+                                                <a href="{{route('educational.create',$person)}}"
+                                                   class="btn btn-sm btn-warning w-100">سوابق تحصیلی</a>
+                                        @endcan
+
+                                        @can('isAccess',\App\Models\Permission::query()->where('title','create_related_person')->first())
+                                                <a href="{{route('person.related.create',$person)}}"
+                                                   class="btn btn-sm btn-light w-100">ثبت اطلاعات افراد مرتبط</a>
+                                        @endcan
+
 
 
                                     </td>
@@ -87,7 +112,7 @@
                             </tbody>
                             <tfoot>
                             <tr>
-{{--                                <th>#</th>--}}
+                                {{--                                <th>#</th>--}}
                                 <th>نام</th>
                                 <th>نام خانوادگی</th>
                                 <th>نام پدر</th>

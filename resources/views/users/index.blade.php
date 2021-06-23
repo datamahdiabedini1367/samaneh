@@ -4,6 +4,9 @@
 
 
 @section('content')
+    {{--    @php--}}
+    {{--        dd($roles);--}}
+    {{--    @endphp--}}
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -52,22 +55,55 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>نام کاربری</th>
-                                                    <th>فعال یا غیر فعال کردن کاربر</th>
+                                                    @can('isAccess',\App\Models\Permission::query()->where('title','active_user')->first())
+
+                                                        <th>وضعیت</th>
+                                                    @endcan
+                                                        @can('isAccess',\App\Models\Permission::query()->where('title','change_role')->first())
+                                                            <th>تغییر سطح دسترسی</th>
+                                                        @endcan
+
+
                                                 </tr>
                                                 </thead>
                                                 <tbody>
                                                 @foreach($users as $user)
-                                                    <tr class="@if($user->is_active == 1) bg-success @endif">
+                                                    <tr>
                                                         <td>{{$user->id}}</td>
                                                         <td>{{$user->username}}</td>
-                                                        <td>
-                                                            <sapn name="user"
-                                                                  class="btn btn-primary "
-                                                                  id="btn-{{$user->id}}"
-                                                                  onclick="activeORDeactive({{$user->id}})"
-                                                            >@if($user->is_active == 1) غیرفعال @else فعال @endif
-                                                            </sapn>
-                                                        </td>
+                                                            @can('isAccess',\App\Models\Permission::query()->where('title','active_user')->first())
+
+                                                            <td>
+                                                                <sapn name="user"
+                                                                      class="btn btn-primary "
+                                                                      id="btn-{{$user->id}}"
+                                                                      onclick="activeORDeactive({{$user->id}})"
+                                                                >@if($user->is_active == 1) غیرفعال @else فعال @endif
+                                                                </sapn>
+                                                            </td>
+                                                        @endcan
+
+                                                            @can('isAccess',\App\Models\Permission::query()->where('title','change_role')->first())
+
+                                                            <td>
+                                                                <select name="role_id_{{$user->id}}"
+                                                                        class="form-control"
+                                                                        id="role_id_{{$user->id}}"
+                                                                        onchange="change_role({{$user->id}});"
+                                                                >
+
+
+                                                                    @foreach($roles as $role)
+
+                                                                        <option value="{{$role->id}}"
+                                                                                @if($user->role_id == $role->id) selected @endif
+                                                                        >
+                                                                            {{$role->title}}
+                                                                        </option>
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                        @endcan
                                                     </tr>
                                                 @endforeach
                                                 </tbody>
@@ -75,7 +111,15 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>نام کاربری</th>
-                                                    <th>فعال یا غیر فعال کردن کاربر</th>
+                                                        @can('isAccess',\App\Models\Permission::query()->where('title','active_user')->first())
+
+                                                        <th>وضعیت</th>
+                                                    @endcan
+                                                        @can('isAccess',\App\Models\Permission::query()->where('title','change_role')->first())
+
+                                                        <th>تغییر سطح دسترسی</th>
+                                                    @endcan
+
                                                 </tr>
                                                 </tfoot>
                                             </table>
@@ -98,9 +142,11 @@
 
 
     <script>
+        @can('isAccess',\App\Models\Permission::query()->where('title','active_user')->first())
+
         function activeORDeactive(userId) {
-            var btn=$('#btn-'+userId);
-            // alert('run funcction');
+            var btn = $('#btn-' + userId);
+// alert('run funcction');
             $.ajax({
                 type: 'post',
                 url: '/users/' + userId + '/changeActivation',
@@ -109,17 +155,17 @@
                 },
                 success: function (data) {
                     console.log(data.msg);
-                        var icon = $('#btn-' + userId).parents('tr');
+                    var icon = $('#btn-' + userId).parents('tr');
                     if (data.msg == "1") {
 
-                            icon.addClass('bg-success');
-                            btn.html("غیرفعال");
-                            // btn.val("غیر فعال");
-                            // btn.addClass("btn-danger");
-                            // btn.removeClass("btn-primary");
+// icon.addClass('bg-success');
+                        btn.html("غیرفعال");
+// btn.val("غیر فعال");
+// btn.addClass("btn-danger");
+// btn.removeClass("btn-primary");
 
-                    }else if (data.msg==0){
-                        icon.removeClass('bg-success');
+                    } else if (data.msg == 0) {
+// icon.removeClass('bg-success');
                         btn.html("فعال");
                     }
 
@@ -127,8 +173,37 @@
 
             })
         }
+
+        @endcan
+
+        @can('isAccess',\App\Models\Permission::query()->where('title','change_role')->first())
+
+        function change_role(userId) {
+            var select = $('#role_id_' + userId);
+            var role_id = select.val();
+// alert('hello');
+// var btn=$('#btn-'+userId);
+// alert('run funcction');
+            $.ajax({
+                type: 'post',
+                url: '/users/' + userId + '/changeRole/' + role_id,
+                data: {
+                    _token: "{{csrf_token()}}",
+                },
+                success: function (data) {
+                    console.log(data.msg);
+                    if (data.msg == "ok") {
+                        $('#role_id_' + userId + ' option:contains(' + role_id + ')').prop({selected: true});
+                    }
+
+                }
+
+            })
+        }
+        @endcan
     </script>
 
 @endsection
+
 
 

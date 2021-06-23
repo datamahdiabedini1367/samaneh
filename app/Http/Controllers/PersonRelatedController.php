@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Individual;
+use App\Models\Permission;
 use App\Models\Person;
+use App\Models\PersonRelated;
 use Illuminate\Http\Request;
 
 class PersonRelatedController extends Controller
@@ -15,16 +17,25 @@ class PersonRelatedController extends Controller
 
     public function create(Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_related_person')->first());
 
+
+        $related_id = PersonRelated::query()->where('person_id',"=",$person->id)->pluck('related_id');
+        $otherPerson = Person::query()->where('id', '!=', $person->id)
+                                        ->whereNotIn('id',$related_id)
+                                        ->get();
+//        dd($otherPerson);
         return view('personRelated.create', [
             'person' => $person,
-            'otherPerson' => Person::query()->where('id', '!=', $person->id)->get(),
+            'otherPerson' => $otherPerson,
             'individuals' => Individual::all(),
         ]);
     }
 
     public function store(Request $request, Person $person)
     {
+        $this->authorize('isAccess',Permission::query()->where('title','create_related_person')->first());
+
         if ($request->hasAny('title')) {
             $individual = Individual::query()->create([
                 'title' => $request->get('title'),
@@ -61,13 +72,26 @@ class PersonRelatedController extends Controller
         //
     }
 
-    public function update(Request $request, Person $person)
+    public function update(Request $request, Person $person,Person $related)
     {
-        //
+        $this->authorize('isAccess',Permission::query()->where('title','edit_related_person')->first());
+
+//        dd('run update person related' , $request->all(),$person->id,$related->id);
+        PersonRelated::query()
+            ->where('person_id',$person->id)
+            ->where('related_id',$related->id)->update([
+                "individual_id" =>$request->get('individual'),
+                "description" =>$request->get('description'),
+            ]);
+
+        return redirect(route('person.related.create',$person));
     }
 
-    public function destroy(Person $person)
+    public function destroy(Person $person,Person $related)
     {
-        //
+        $this->authorize('isAccess',Permission::query()->where('title','delete_related_person')->first());
+
+        PersonRelated::query()->where('person_id',$person->id)->where('related_id',$related->id)->delete();
+        return redirect(route('person.related.create',$person));
     }
 }

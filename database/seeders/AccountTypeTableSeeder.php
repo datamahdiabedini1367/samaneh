@@ -14,6 +14,7 @@ class AccountTypeTableSeeder extends Seeder
      */
     public function run()
     {
+        AccountType::query()->truncate();
         AccountType::query()->insert([
             ['title' =>'اینستاگرام'],
             ['title' =>'واتس آپ '],

@@ -8,6 +8,8 @@
 
 @section('content')
 
+    @can('isAccess',\App\Models\Permission::query()->where('title','create_user')->first())
+
     <body class="hold-transition ">
     <div class="register-box">
         <div class="register-logo">
@@ -31,17 +33,25 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text"><input type="checkbox" name="is_active" value="1"></span>
                         </div>
-                        <label  class="form-control bg-white" >فعال</label>
+                        <label class="form-control bg-white">فعال</label>
 
                     </div>
-                    <!-- /input-group -->
 
-                    {{--                <div class="input-group mb-3">--}}
-                    {{--                    <input type="radio" class="form-control" placeholder="فعال بودن" name="is_active">--}}
-                    {{--                    <div class="input-group-append">--}}
-                    {{--                        فعال--}}
-                    {{--                    </div>--}}
-                    {{--                </div>--}}
+                    <div class="input-group mb-3">
+
+                        <div class="input-group">
+
+                            <select name="role_id" id="role_id"  class="form-control">
+                                <option>نقش کاربر در سیستم را انتخاب کنید</option>
+                                @foreach($roles as $role)
+{{--                                    @dd($role)--}}
+                                    <option value="{{$role->id}}">{{$role->title}}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                    </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" placeholder="رمز عبور" name="password">
                         <div class="input-group-append">
@@ -59,7 +69,7 @@
 
                         <!-- /.col -->
                         <div class="col-4">
-                            <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت نام</button>
+                            <button type="submit" class="btn btn-primary btn-block btn-flat">ثبت </button>
                         </div>
                         <!-- /.col -->
                     </div>
@@ -82,6 +92,6 @@
 
 
     </body>
-
+    @endcan
 @endsection
 

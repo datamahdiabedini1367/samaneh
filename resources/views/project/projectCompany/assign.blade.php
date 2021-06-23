@@ -63,12 +63,15 @@
                                                         <td>{{$company->registration_date}}</td>
                                                         <td>{{$company->registration_number}}</td>
                                                         <td>
+                                                            @can('isAccess',\App\Models\Permission::query()->where('title','create_company_project')->first())
 
                                                             <sapn name="companies[]"
                                                                   class="btn btn-primary "
                                                                   id="btn-{{$company->id}}"
                                                                   onclick="selectCompanyForProject({{$project->id}},{{$company->id}})"
                                                             >انتخاب</sapn>
+
+                                                            @endcan
 
 
                                                         </td>
@@ -106,6 +109,8 @@
 
 
     <script>
+        @can('isAccess',\App\Models\Permission::query()->where('title','create_company_project')->first())
+
         function selectCompanyForProject(projectId,companyId){
             $.ajax({
                 type: 'post',
@@ -129,6 +134,7 @@
 
             })
         }
+        @@endcan
     </script>
 
 

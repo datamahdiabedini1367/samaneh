@@ -116,14 +116,17 @@
         <div class="row no-print">
             <div class="col-12">
                 </a>
+                @can('isAccess',\App\Models\Permission::query()->where('title','list_companies')->first())
                 <a href="{{route('companies.index')}}" class="btn btn-default">بازگشت به صفحه لیست شرکت ها
                 </a>
-                <button type="button" class="btn btn-success float-left"><i class="fa fa-download"></i>
-                    خروجی EXCEL
-                </button>
-                <button type="button" class="btn btn-primary float-left ml-2" style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> خروجی PDF
-                </button>
+                @endcan
+
+{{--                <button type="button" class="btn btn-success float-left"><i class="fa fa-download"></i>--}}
+{{--                    خروجی EXCEL--}}
+{{--                </button>--}}
+{{--                <button type="button" class="btn btn-primary float-left ml-2" style="margin-right: 5px;">--}}
+{{--                    <i class="fa fa-download"></i> خروجی PDF--}}
+{{--                </button>--}}
             </div>
         </div>
     </div>

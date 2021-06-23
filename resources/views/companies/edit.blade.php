@@ -45,33 +45,6 @@
                                            placeholder="نام شرکت  را وارد کنید" value="{{$company->name}}">
                                 </div>
 
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="email"> ایمیل شرکت :</label>--}}
-{{--                                    @foreach($company->emails() as $email)--}}
-{{--                                    <input type="email" class="form-control"--}}
-{{--                                           name="emails[{{$company->id}}][value][{{$email->id}}]"--}}
-{{--                                           oninput="checkemail({{$company->id}},{{$email->id}})"--}}
-{{--                                           placeholder="ایمیل مورد نظر را وارد کنید" value="{{$email->value}}">--}}
-{{--                                        <div class="alert alert-danger error hide" id="emails[{{$company->id}}][value][{{$email->id}}]">--}}
-{{--                                        </div>--}}
-{{--                                    @endforeach--}}
-{{--                                    <span id="add_email_box" title="اضافه کردن ایمیل" class="btn btn-success"--}}
-{{--                                          onclick="update_text_item_Box('email','email','ایمیل',{{$company->id}})">+</span>--}}
-{{--                                    <div id="emailbox"></div>--}}
-{{--                                </div>--}}
-
-{{--                                <div class="form-group">--}}
-{{--                                    <label for="email"> شماره تماس شرکت :</label>--}}
-{{--                                    @foreach($company->phones as $phone)--}}
-{{--                                    <input type="text" class="form-control" id="phone" name="phones[{{$company->id}}][value][{{$phone->id}}]"--}}
-{{--                                           placeholder="شماره تماس مورد نظر  را وارد کنید" value="{{$phone->value}}">--}}
-{{--                                    @endforeach--}}
-{{--                                    <span id="add_email_box" title="اضافه کردن شماره تماس" class="btn btn-success"--}}
-{{--                                          onclick="update_text_item_Box('phone','text','شماره تماس',{{$company->id}})">+</span>--}}
-{{--                                    <div id="phonebox"></div>--}}
-{{--                                </div>--}}
-
-
                                 <div class="form-group">
                                     <label for="registration_number"> شماره ثبت شرکت :</label>
                                     <input type="text" class="form-control" id="registration_number"

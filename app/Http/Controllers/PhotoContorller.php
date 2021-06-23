@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PhotoStoreRequest;
 use App\Models\Company;
 use App\Models\Person;
 use App\Models\Photo;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class PhotoContorller extends Controller
@@ -13,16 +13,13 @@ class PhotoContorller extends Controller
 
     public function index($type, $id)
     {
-
         $itemType = $type;
         $type = $this->firstItem($type, $id);
-//        dd($type,$id);
 
         return view('photos.index', [
             'itemType' => $itemType,
             'type' => $type,
         ]);
-
 
     }
 
@@ -33,27 +30,22 @@ class PhotoContorller extends Controller
         } else if ($type == 'person') {
             $type = Person::query()->where('id', $id)->first();
         }
+
         return $type;
-
     }
 
 
-    public function create()
-    {
-        //
-    }
 
-
-    public function store(Request $request, $type, $id)
+    public function store(PhotoStoreRequest  $request, $type, $id)
     {
         $path = $request->file('image')->store('public/image/'.$type.'/'.$id.'/');
 
-//        $type=$this->firstItem($type,$id);
-//        dd(gettype($type));
         if ($type=='company') {
             $type = Company::class;
         }else if ($type == 'person'){
             $type = Person::class;
+        }else{
+            return ;
         }
 
         Photo::query()->create([
@@ -64,25 +56,6 @@ class PhotoContorller extends Controller
         ]);
 
         return redirect()->back();
-
-    }
-
-
-    public function show($id)
-    {
-        //
-    }
-
-
-    public function edit($id)
-    {
-        //
-    }
-
-
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     public function destroy(Photo $photo)

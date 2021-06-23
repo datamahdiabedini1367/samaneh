@@ -12,6 +12,9 @@
 
 </head>
 <body class="hold-transition sidebar-mini">
+@php
+    use App\Models\Permission;
+@endphp
 <div class="wrapper">
 
     <!-- Navbar -->
@@ -21,15 +24,24 @@
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fa fa-bars"></i></a>
             </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{route('loginForm')}}" class="nav-link">ورود</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{route('signup')}}" class="nav-link">ثبت نام</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-                <a href="{{route('logout')}}" class="nav-link">خروج</a>
-            </li>
+
+            @guest()
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{route('loginForm')}}" class="nav-link">ورود</a>
+                </li>
+            @endguest
+            @can('isAccess',Permission::query()->where('title','create_user')->first() )
+                {{--            @can('isAccess','create_user' )--}}
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{route('signup')}}" class="nav-link">تعریف کاربر </a>
+                </li>
+            @endcan
+
+            @auth()
+                <li class="nav-item d-none d-sm-inline-block">
+                    <a href="{{route('logout')}}" class="nav-link">خروج</a>
+                </li>
+            @endauth
         </ul>
 
     </nav>
@@ -39,8 +51,7 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="index3.html" class="brand-link">
-            <img src="/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
-                 style="opacity: .8">
+
             <span class="brand-text font-weight-light">پنل مدیریت</span>
         </a>
 
@@ -48,69 +59,95 @@
         <div class="sidebar" style="direction: ltr">
             <div style="direction: rtl">
                 <!-- Sidebar user panel (optional) -->
-{{--                <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
-{{--                    <div class="image">--}}
-{{--                        <img src="/image/picProfile.png" class="img-circle elevation-2" alt="User Image">--}}
-{{--                    </div>--}}
-{{--                    <div class="info">--}}
-{{--                        <a href="#" class="d-block">حسام موسوی</a>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
+            {{--                <div class="user-panel mt-3 pb-3 mb-3 d-flex">--}}
+            {{--                    <div class="image">--}}
+            {{--                        <img src="/image/picProfile.png" class="img-circle elevation-2" alt="User Image">--}}
+            {{--                    </div>--}}
+            {{--                    <div class="info">--}}
+            {{--                        <a href="#" class="d-block">حسام موسوی</a>--}}
+            {{--                    </div>--}}
+            {{--                </div>--}}
 
-                <!-- Sidebar Menu -->
+            <!-- Sidebar Menu -->
                 <nav class="mt-2">
-                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        data-accordion="false">
                         <!-- Add icons to the links using the .nav-icon class
                              with font-awesome or any other icon font library -->
 
 
+                        @guest
+                            <li class="nav-item">
+                                <a href="{{route('loginForm')}}" class="nav-link">
+                                    <i class="nav-icon fa fa-th"></i>
+                                    <p>
+                                        ورود
+                                    </p>
+                                </a>
+                            </li>
+                        @endguest
+
+                        @can('isAccess',Permission::query()->where('title','create_user')->first())
+                            <li class="nav-item">
+                                <a href="{{route('signup')}}" class="nav-link">
+                                    <i class="nav-icon fa fa-th"></i>
+                                    <p>
+                                        تعریف کاربر
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+
+
+                        @can('isAccess',Permission::query()->where('title','list_users')->first())
+                            <li class="nav-item">
+                                <a href="{{route('users.index')}}" class="nav-link">
+                                    <i class="nav-icon fa fa-th"></i>
+                                    <p>
+                                        لیست کاربران
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+
+
+
+                        @can('isAccess',Permission::query()->where('title','list_projects')->first())
+                            <li class="nav-item">
+                                <a href="{{route('projects.index')}}" class="nav-link">
+                                    <i class="nav-icon fa fa-th"></i>
+                                    <p>
+                                        لیست پروژه
+                                        {{--                                    <span class="right badge badge-danger">جدید</span>--}}
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
+
+                        @can('isAccess',Permission::query()->where('title','list_roles')->first())
+
                         <li class="nav-item">
-                            <a href="{{route('signup')}}" class="nav-link">
+                            <a href="{{route('roles.index')}}" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
                                 <p>
-                                    تعریف کاربر
+                                    لیست نقش ها
                                 </p>
                             </a>
                         </li>
+                        @endcan
 
-                        <li class="nav-item">
-                            <a href="{{route('users.index')}}" class="nav-link">
-                                <i class="nav-icon fa fa-th"></i>
-                                <p>
-                                   لیست کاربران
-                                </p>
-                            </a>
-                        </li>
+                        @can('isAccess',Permission::query()->where('title','my_project')->first())
+                            <li class="nav-item">
+                                <a href="{{route('user.projects')}}" class="nav-link">
+                                    <i class="nav-icon fa fa-th"></i>
+                                    <p>
+                                        لیست پروژه های من
+                                    </p>
+                                </a>
+                            </li>
+                        @endcan
 
-                        <li class="nav-item">
-                            <a href="{{route('loginForm')}}" class="nav-link">
-                                <i class="nav-icon fa fa-th"></i>
-                                <p>
-                                    ورود
-                                </p>
-                            </a>
-                        </li>
-
-
-
-                        <li class="nav-item">
-                            <a href="{{route('projects.index')}}" class="nav-link">
-                                <i class="nav-icon fa fa-th"></i>
-                                <p>
-                                    لیست پروژه
-{{--                                    <span class="right badge badge-danger">جدید</span>--}}
-                                </p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <a href="{{route('users.index')}}" class="nav-link">
-                                <i class="nav-icon fa fa-th"></i>
-                                <p>
-                                     لیست پروژه های من
-                                </p>
-                            </a>
-                        </li>
+                        @can('isAccess',Permission::query()->where('title','list_companies')->first())
 
                         <li class="nav-item">
                             <a href="{{route('companies.index')}}" class="nav-link">
@@ -120,7 +157,26 @@
                                 </p>
                             </a>
                         </li>
+                        @endcan
 
+
+                        @can('isAccess',Permission::query()->where('title','change_password')->first())
+
+                        <li class="nav-item">
+                            @php
+                            $user = auth()->user()->id;
+                            @endphp
+
+                            <a href="{{route('users.edit',[auth()->user()->id])}}" class="nav-link">
+                                <i class="nav-icon fa fa-th"></i>
+                                <p>
+                                    تغییر رمز عبور
+                                </p>
+                            </a>
+                        </li>
+                        @endcan
+
+                        @can('isAccess',Permission::query()->where('title','list_persons')->first())
                         <li class="nav-item">
                             <a href="{{route('persons.index')}}" class="nav-link">
                                 <i class="nav-icon fa fa-th"></i>
@@ -129,6 +185,7 @@
                                 </p>
                             </a>
                         </li>
+                        @endcan
 
 
                     </ul>

@@ -193,8 +193,8 @@
 //               dd($related->pivot->individual())
                 @endphp
                 <td>
-                    <select name="individual_{{$related->id}}" class="form-control input-lg select2"
-                            id="relatedType"
+                    <select name="individual" class="form-control input-lg select2 w-100"
+                            form="formUpdate_{{$related->id}}"
                             onchange="selectRelated(this)">
                         @foreach($individuals as $individual)
                             <option
@@ -205,8 +205,9 @@
                 </td>
                 <td>
                     <textarea class="form-control" id="accountNew"
-          name="description"
-          placeholder="توضیحات مد نظر را وارد کنید">{{$related->pivot->description}}</textarea>
+                              name="description"
+                              form="formUpdate_{{$related->id}}"
+                              placeholder="توضیحات مد نظر را وارد کنید">{{$related->pivot->description}}</textarea>
                 </td>
                 <td>{{$related->id}}</td>
                 <td>{{$related->firstName}}</td>
@@ -216,8 +217,19 @@
                 <td>{{$related->birthdatePlace}}</td>
                 <td>{{$related->nationalCode}}</td>
                 <td>
-                    <a href="#">حذف</a>
-                    <a href="#">ویرایش</a>
+                    <form action="{{route('person.related.delete',[$person->id,$related->id])}}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button  class="btn btn-danger w-100">حذف
+                        </button>
+
+                    </form>
+                    <form action="{{route('person.related.update',[$person->id,$related->id])}}" method="post"
+                          id="formUpdate_{{$related->id}}">
+                        @csrf
+                        @method('PATCH')
+                        <button  class="btn btn-success w-100">ویرایش  </button>
+                    </form>
                 </td>
             </tr>
         @endforeach
@@ -274,6 +286,10 @@
             //     }
             // }
         }
+
+        // function delete_related(personId , relatedId){
+        //     alert(personId +'----'+ relatedId);
+        // }
 
 
         $('#accountTypeNew').on('change', function () {

@@ -60,23 +60,23 @@
                         <th> تاریخ شروع به کار</th>
                         <th> تاریخ اتمام همکاری</th>
                         <th> علت ترک شغل</th>
-                        <th> سمت </th>
+                        <th> سمت</th>
                         <th> بخش</th>
                     </tr>
                     </thead>
                     <tbody>
                     @foreach($company->persons as $person)
                         <tr>
-                        <th>{{$person->firstName}}</th>
-                        <th>{{$person->lastName}}</th>
-                        <th>{{$person->fatherName}}</th>
-                        <th>{{$person->married_person}}</th>
-                        <th>{{$person->nationalCode}}</th>
-                        <th>{{$person->pivot->startDate}}</th>
-                        <th>{{$person->pivot->endDate}}</th>
-                        <th>{{$person->pivot->reasonLeavingJob}}</th>
-                        <th>{{$person->pivot->semat}}</th>
-                        <th>{{$person->pivot->section}}</th>
+                            <th>{{$person->firstName}}</th>
+                            <th>{{$person->lastName}}</th>
+                            <th>{{$person->fatherName}}</th>
+                            <th>{{$person->married_person}}</th>
+                            <th>{{$person->nationalCode}}</th>
+                            <th>{{$person->pivot->startDate}}</th>
+                            <th>{{$person->pivot->endDate}}</th>
+                            <th>{{$person->pivot->reasonLeavingJob}}</th>
+                            <th>{{$person->pivot->semat}}</th>
+                            <th>{{$person->pivot->section}}</th>
                         </tr>
                     @endforeach
 
@@ -88,22 +88,24 @@
         <!-- /.row -->
 
 
-
         <!-- this row will not appear when printing -->
         <div class="row no-print">
             <div class="col-12">
-{{--                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> پرینت--}}
-{{--                </a>--}}
-                <a href="{{route('companies.persons.create',$company)}}"  class="btn btn-default"> ثبت پرسنل جدید
-                </a>
-                <a href="{{route('companies.index')}}"  class="btn btn-default">بازگشت به صفحه لیست شرکت ها
-                </a>
-                <button type="button" class="btn btn-success float-left"><i class="fa fa-download"></i>
-                    خروجی EXCEL
-                </button>
-                <button type="button" class="btn btn-primary float-left ml-2" style="margin-right: 5px;">
-                    <i class="fa fa-download"></i> خروجی PDF
-                </button>
+                @can('isAccess',\App\Models\Permission::query()->where('title','create_person_company')->first())
+                    <a href="{{route('companies.persons.create',$company)}}" class="btn btn-default"> ثبت پرسنل جدید
+                    </a>
+                @endcan
+
+                @can('isAccess',\App\Models\Permission::query()->where('title','list_companies')->first())
+                    <a href="{{route('companies.index')}}" class="btn btn-default">بازگشت به صفحه لیست شرکت ها
+                    </a>
+                @endcan
+                {{--                <button type="button" class="btn btn-success float-left"><i class="fa fa-download"></i>--}}
+                {{--                    خروجی EXCEL--}}
+                {{--                </button>--}}
+                {{--                <button type="button" class="btn btn-primary float-left ml-2" style="margin-right: 5px;">--}}
+                {{--                    <i class="fa fa-download"></i> خروجی PDF--}}
+                {{--                </button>--}}
             </div>
         </div>
     </div>

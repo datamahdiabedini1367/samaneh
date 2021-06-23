@@ -3,15 +3,33 @@
 namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\CheckPermission;
 use App\Http\Requests\CompanyStoreRequest;
 use App\Http\Requests\CompanyUpdateRequest;
 use App\Models\Company;
+use App\Models\Permission;
+use Illuminate\Support\Facades\Gate;
 
 class CompanyController extends Controller
 {
+    public function __construct()
+    {
+//        $this->middleware(CheckPermission::class . ":list_companies")->only('index');
+//       $this->middleware(CheckPermission::class . ":create_company")->only(['create','store']);
+//        $this->middleware(CheckPermission::class . ":show_company")->only(['show']);
+//        $this->middleware(CheckPermission::class . ":edit_company")->only(['edit','update']);
+//        $this->middleware(CheckPermission::class . ":delete_company")->only('destroy');
+
+        $this->middleware('auth');
+//        $this->authorizeResource(Company::class);
+    }
 
     public function index()
     {
+//        Gate::authorize('list_companies');
+
+        $this->authorize('isAccess',Permission::query()->where('title','list_companies')->first());
+
         return view('companies.index', [
             'companies' => Company::all(),
         ]);
@@ -21,15 +39,24 @@ class CompanyController extends Controller
 
     public function create()
     {
-        return view('companies.create', [
+//        if(!Gate::allows('create_company')){ return abort(403); }
+//        if(Gate::denies('create_company')){ return abort(403); }
 
-        ]);
+//        Gate::authorize('create_company');
+        $this->authorize('isAccess',Permission::query()->where('title','create_company')->first());
+
+        return view('companies.create');
     }
 
 
     public function store(CompanyStoreRequest $request)
     {
-//        dd($request->all());
+//        Gate::authorize('create_company');
+//        if(!Gate::allows('create_company')){
+//            return abort(403);
+//        }
+        $this->authorize('isAccess',Permission::query()->where('title','create_company')->first());
+
         $company = Company::query()->create([
             'name' => $request->get('name'),
             'registration_date' => $request->get('registration_date'),
@@ -39,32 +66,43 @@ class CompanyController extends Controller
         ]);
 
         return redirect(route('contact.create', ['type' => 'company', 'data' => $company]));
-
-
     }
 
 
     public function show(Company $company)
     {
+//        Gate::authorize('show_company',$company);
+        $this->authorize('isAccess',Permission::query()->where('title','show_company')->first());
+
         return view('companies.show', [
             'company' => $company
         ]);
-
     }
 
 
     public function edit(Company $company)
     {
-//        dd($company);
+        $this->authorize('isAccess',Permission::query()->where('title','edit_company')->first());
+
+//        if (Gate::none(['edit_company',['create_company']],$company)){ abort(403);}
+//        if (!Gate::any(['edit_company',['create_company']],$company)){ abort(403);}
+//        if (!Gate::check('edit_company',$company)){ abort(403);}
+//        if(!Gate::allows('edit_company',$company)){ return abort(403); }
+//        if(Gate::denies('edit_company',$company)){ return abort(403); }
+//        Gate::authorize('edit_company',$company);
+//        $company1=Company::query()->where('id',$company->id)->first();
+//        $this->authorize('edit_company',$company1);
+
         return view('companies.edit', [
             'company' => $company,
         ]);
-
     }
 
 
     public function update(CompanyUpdateRequest $request, Company $company)
     {
+//        Gate::authorize('edit_company',$company);
+        $this->authorize('isAccess',Permission::query()->where('title','edit_company')->first());
 
         $company->update([
             'name' => $request->get('name', $company->name),
@@ -74,7 +112,7 @@ class CompanyController extends Controller
             'description' => $request->get('description', $company->description),
         ]);
 
-        $emails = array();
+//        $emails = array();
 //        foreach ($request->get('emails') as $companyId => $itemValue) {
 //            foreach ($itemValue['value'] as $emailId => $value) {
 //                $emails[] = [
@@ -90,10 +128,7 @@ class CompanyController extends Controller
 //                return $item;
 //            }
 //        })->toArray();
-
 //        dd($emails);
-
-
 //        foreach ($emails as $item) {
 ////            dd($item);
 //            $isEmailAvilable = $company->emails()
@@ -106,15 +141,17 @@ class CompanyController extends Controller
 //            }
 //            $company->emails()->updateOrCreate($item);
 //        }
-
         return redirect(route('contact.create', ['type' => 'company', 'data' => $company]));
 
-        return redirect(route('companies.index'));
+//        return redirect(route('companies.index'));
     }
 
 
     public function destroy(Company $company)
     {
+
+//        Gate::authorize('delete_company',$company);
+        $this->authorize('isAccess',Permission::query()->where('title','delete_company')->first());
 
         $company->persons()->detach();
         $company->delete();

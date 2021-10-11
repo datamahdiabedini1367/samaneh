@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 //            IndividualTableSeeder::class,
 //            AccountTypeTableSeeder::class,
             PermissonTableSeeder::class,
-//            AdminSeeder::class
+            AdminSeeder::class
         ]);
         Schema::enableForeignKeyConstraints();
     }

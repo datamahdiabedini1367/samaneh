@@ -1,0 +1,11 @@
+/* Available weights for `Shabnam`: 100, 300, 400, 500, 700 */
+@font-face {
+    font-family: 'Shabnam';
+    src: url("/assets/fonts/shabnam/shabnam.eot");
+    src: url("/assets/fonts/shabnam/shabnam.eot?#iefix") format("embedded-opentype"),
+    url("/assets/fonts/shabnam/shabnam.woff2") format("woff2"),
+    url("/assets/fonts/shabnam/shabnam.woff") format("woff"),
+    url("/assets/fonts/shabnam/shabnam.ttf") format("truetype");
+    font-weight: 100;
+    font-style: normal;
+}

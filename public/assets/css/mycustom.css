@@ -1,0 +1,176 @@
+/*select{*/
+/*    font-family: Shabnam;*/
+/*}*/
+.styled-select, select>option ,.pagination{
+    font-family :Vazir, Shabnam, Tahoma !important;
+}
+
+.submit_button,#submit_button{
+    background-color:  #330055;
+    width: 150px;
+    color: white;
+}
+
+#cart_header{
+    background-color:  #330055 !important;
+    color: white;
+}
+
+#sidebar{
+    background-color:  #330055;
+
+}
+.topMenu{
+    background-color:  #330055 !important;
+}
+.topMenu > *{
+    color: #fff !important;
+}
+
+.btn-circular {
+    border: 0;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.btn-circular::before {
+    font-family: "Font Awesome 5 Free";
+    color: #fff;
+    position: relative;
+    top: 1px;
+}
+
+.delete-ico::before {
+    content: '\f2ed';
+}
+
+.edit-ico::before {
+    content: '\2193';
+}
+
+
+@media only screen and (max-width: 600px) {
+    .btn-custom::before {
+        content: '\f2ed';
+    }
+}
+
+.btn-custom::after {
+    content: '|';
+    color: white;
+}
+
+.bg-me-red {
+    background-color: firebrick;
+}
+
+.fg-me-red {
+    color: firebrick;
+}
+
+.me-rg-ft {
+    float: right;
+}
+
+/*-------------------------------------------------------------*/
+.btn-ico{
+    font-family: 'Font Awesome 5 Free',FontAwesome ;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+.btn-ico-tc-white{
+    color: white;
+}
+.btn-ico-tc-black{
+    color: black;
+}
+.btn-edit:before{
+    content: "\f044";
+    padding:3px ;
+    position: relative;
+    left: 6px;
+}
+.btn-eye:before{
+    content: "\f06e";
+    position: relative;
+    left: 3px;
+}
+.btn-delete:before{
+    content: '\f2ed';
+}
+.btn-photo:before{
+    content: "\f1c5";
+}
+.btn-syberspace:before{
+    content: "\f0ac";
+    position: relative;
+    top: 0px;
+    bottom: 3px;
+    border: 0;
+    font-size: 12pt;
+}
+.btn-email-envelope:before{
+    content: "\f0e0";
+    position: relative;
+    left: 1px;
+    padding: 0px;
+    margin: 0px;
+}
+.btn-phone:before{
+    content: "\f2a0";
+    left: 3px;
+}
+.btn-educational:before{
+    content: "\f19d";
+    position: relative;
+    left: 3px;
+}
+.btn-personRelated:before{
+    content: "\f0c0";
+    position: relative;
+    left: 2px;
+}
+.btn-savabegh-jobs:before{
+    content: "\f2ba";
+}
+.btn-person-project:before{
+    content: "\f0d3";
+}
+
+.btn-plus::before{
+    content: "\f234";
+    position: relative;
+    left: 3px;
+}
+.btn-company::before{
+    content: "\f1ad";
+}
+
+.btn-add::before{
+    content: "\f067";
+}
+.btn-export{
+    width: 200px;
+}
+.btn-export-download-execl::before{
+    font-family: "Font Awesome 5 Free" , FontAwesome;
+    content: "\f019"
+}
+.btn-export-download-execl::after{
+    font-family: Vazir,Shabnam,Tahoma;
+    content: 'خروجی Excel';
+}
+
+.btn.btn-secondary.btn-ico.btn-ico-tc-black {
+    background-color: #c6c6c6 !important;
+}
+.btn.btn-secondary.btn-ico.btn-ico-tc-black:hover{
+    background-color: #7b7b7b !important;;
+}
+
+
+
+
+

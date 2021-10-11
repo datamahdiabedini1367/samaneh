@@ -59,7 +59,7 @@
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-gopuram"></i>
-                                <p>پروژها
+                                <p>پروژه ها
                                     <i class="right fa fa-angle-left"></i>
                                 </p>
                             </a>

@@ -11,4 +11,9 @@ class Individual extends Model
     protected $guarded=['id'];
     protected $fillable=['title'];
     protected $table='individuals';
+
+    public function RelatedIndividual()
+    {
+        return $this->hasOne(PersonRelated::class,'individual_id','id');
+    }
 }

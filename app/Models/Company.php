@@ -10,17 +10,18 @@ class Company extends Model
 {
     use HasFactory;
     use SoftDeletes;
+    protected $perPage=5;
 
     protected $guarded = ['id'];
     protected $fillable = ['name', 'registration_date',
         'address', 'registration_number', 'description'];
     protected $table = 'companies';
 
+
+
     public function getRegistrationDateCompanyAttribute()
     {
-        $date = convert_date($this->registration_date, 'gregorian');
-
-        return $date;
+        return convert_date($this->registration_date, 'jalali');
     }
 
 
@@ -46,8 +47,6 @@ class Company extends Model
         );
     }
 
-
-
     public function phones()
     {
         return $this->morphMany(
@@ -66,13 +65,13 @@ class Company extends Model
     public function persons()
     {
         return $this->belongsToMany(Person::class, 'company_person', 'company_id', 'person_id')
-            ->withPivot(['reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
+            ->withPivot(['id','reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
             ->withTimestamps();
     }
 
     public function hasPerson(Person $person)
     {
-        return $this->persons()->withPivot(['reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
+        return $this->persons()->withPivot(['id','reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
             ->where('person_id', $person->id)
             ->exists();
 
@@ -85,7 +84,6 @@ class Company extends Model
 
     public function addEmails(array $emails)
     {
-
         $emails1 = collect($emails)->filter(function ($item) {
             if (!empty($item['value'])) {
                 return $item;

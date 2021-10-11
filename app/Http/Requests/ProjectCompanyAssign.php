@@ -18,6 +18,13 @@ class ProjectCompanyAssign extends FormRequest
         return [
             'companies'=>['array'],
             'companies.*'=>['exists:companies,id'],
+            ];
+    }
+
+    public function messages()
+    {
+        return [
+            'companies.*.exists'=>'شرکت/شرکتهای انتخاب شده یافت نشد',
         ];
     }
 }

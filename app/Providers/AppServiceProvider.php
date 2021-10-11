@@ -2,9 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Company;
-use App\Models\Person;
-use Illuminate\Database\Eloquent\Relations\Relation;
+use App\Repositories\PersonRepository;
+use App\Repositories\PersonRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(PersonRepositoryInterface::class,PersonRepository::class);
     }
 
     /**
@@ -26,9 +25,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-//        Relation::morphMap([
-//            'person' => Person::class,
-//            'company' => Company::class,
-//        ]);
+
     }
 }

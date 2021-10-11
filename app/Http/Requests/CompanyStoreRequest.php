@@ -13,29 +13,30 @@ class CompanyStoreRequest extends FormRequest
     }
 
 
-
-
-
     public function rules()
     {
         return [
-            'name'=>['required'],
-            'registration_date'=>['nullable','string'],
-            'emails'=>['array'],
-            'emails.*'=>['unique:emails,value'],
-            'phones'=>['array'],
-            'phones.*'=>['unique:phones,value'],
-            'address'=>['nullable'],
-            'registration_number'=>['nullable'],
-            'description'=>['nullable'],
+            'name' => ['required', 'string'],
+            'registration_date' => ['nullable', 'string'],
+            'address' => ['nullable','string'],
+            'registration_number' => ['nullable','string'],
+            'description' => ['nullable','string'],
         ];
     }
+
     public function messages()
     {
         return [
-            'emails.*.unique'=>'ثبت ایمیل تکراری در سامانه',
-            'phones.*.unique'=>'ثبت شماره تماس تکراری در سامانه',
+            'name.required' => 'نام شرکت اجباریست',
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'registration_date' => convert_date($this->registration_date, 'gregorian'),
+        ]);
+    }
+
 
 }

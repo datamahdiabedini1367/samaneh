@@ -24,10 +24,18 @@ class RoleRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'=>['required',],
+            'title'=>['required','unique:roles,title'],
             'permissions'=>['array'],
             'permissions.*'=>['exists:permissions,id']
-            //
+        ];
+    }
+    public function messages()
+    {
+        return [
+
+            'title.unique'=>"این عنوان قبلا در سیستم ثبت شده است عنوان دیگری برای نقش انتخاب کنید",
+            'title.required'=>"عنوان نقش وارد نشده است",
+            'permissions.*.exists'=>"سطح دسترسی اشتباه وارد شده است",
         ];
     }
 }

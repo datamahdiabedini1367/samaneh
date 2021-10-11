@@ -24,7 +24,7 @@ class CompanyFactory extends Factory
 //        dd($this->faker->company);
         return [
             'name' =>$this->faker->company,
-            'registration_date' =>convert_date($this->faker->dateTime()->format('Y/m/d'),'jalali'),
+            'registration_date' =>convert_date($this->faker->dateTimeBetween('1300/01/01','1399/01/01')->format('Y/m/d'),'gregorian'),
             'address' =>$this->faker->address,
             'registration_number' =>$this->faker->buildingNumber,
             'description' =>$this->faker->text,

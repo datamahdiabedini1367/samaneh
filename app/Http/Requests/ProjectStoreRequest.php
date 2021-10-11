@@ -16,31 +16,35 @@ class ProjectStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => ['required'],
-            'startDate' => ['nullable',],
-            'endDate' => ['nullable',],
-            'description' => ['nullable'],
-//            'users' => ['exists:users,id'],
-//            'companies' => ['exists:companies,id'],
-//            'persons' => ['exists:people,id'],
+            'name' => ['required','unique:projects,name'],
+            'description' => ['nullable','string'],
+            "startDate" => ['date', 'nullable',],
+            "endDate" => ['date', 'nullable', 'after:startDate',],
         ];
     }
+
 
     public function messages()
     {
         return [
             'name.required' => 'نام پروژه اجباریست',
+            'name.unique' => 'این نام پروژه تکراریست لطفا نام دیگری را برای پروژه وارد نمایید',
             'users.exists' => 'کاربر تخصیص داده شده اشتباه است',
             'companies.exists' => 'شرکت به درستی انتخاب نشده است',
             'persons.exists' => 'افراد به درستی انتخاب نشده است',
+            'startDate.date_format' => "فرمت تاریخ باید به این شکل باشد. مثال :1400/01/01",
+            'endDate.date_format' => "فرمت تاریخ باید به این شکل باشد. مثال :1400/01/01",
+            'endDate.after' => 'تاریخ پایان پروژه باید بعد از تاریخ شروع پروژه باشد'
         ];
     }
 
     protected function prepareForValidation()
     {
         $this->merge([
-//            'startDate' => convert_date($this->startDate,'gregorian'),
-//            'endDate' => convert_date($this->endDate,'gregorian'),
-        ]);
+            'startDate' => convert_date($this->startDate, 'gregorian')]);
+        $this->merge([
+            'endDate' => convert_date($this->endDate, 'gregorian')]);
     }
+
+
 }

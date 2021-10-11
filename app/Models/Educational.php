@@ -15,6 +15,21 @@ class Educational extends Model
          'address', 'average','startDate','endDate'
     ];
 
+    public function getStartDateEducationalAttribute()
+    {
+        return convert_date($this->startDate, 'jalali');
+    }
+
+    public function getEndDateEducationalAttribute()
+    {
+        return convert_date($this->endDate, 'jalali');
+    }
+
+    public function person()
+    {
+        return $this->belongsTo(Person::class,'person_id','id');
+    }
+
 
 
 }

@@ -9,39 +9,40 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
+use Symfony\Component\VarDumper\Dumper\DataDumperInterface;
 
 class RegisterationController extends Controller
 {
     public function create()
     {
-
         $this->authorize('isAccess',Permission::query()->where('title','create_user')->first());
-//        dd(Role::all());
-        return view('authentication.signup',[
-            'roles'=>Role::all(),
+
+        return view('pages.users.authentication.signup',[
+            'roles'=>arrayTwoItem(Role::all(['id','title'])->toArray()),
         ]);
     }
+
 
     public function store(RegisterationRequest $request)
     {
         $this->authorize('isAccess',Permission::query()->where('title','create_user')->first());
 
-//        dd($request->all(),$request->get('is_active',0));
-        $user = User::query()->create([
+        User::query()->create([
             'username'=>$request->get('username'),
             'is_active'=>$request->get('is_active',0),
             'role_id'=>$request->get('role_id'),
             'password'=>bcrypt($request->get('password')),
         ]);
-
-        return redirect(route('users.index'));
+        return redirect(route('users.listUsers'));
     }
 
     public function createShowLoginForm()
     {
         $this->middleware('guest');
-        return view('authentication.login');
+        return view('pages.users.authentication.login');
 
     }
 
@@ -53,7 +54,7 @@ class RegisterationController extends Controller
 
         if (!$user->is_active)
             abort(403);
-
+//        dd(!$user->is_active,!Hash::check($request->get('password'),$user->password) , $request->get('password') );
         if (!Hash::check($request->get('password'),$user->password)){
             return back()->withErrors('کاربری با این اطلاعات یافت نشد');
         }

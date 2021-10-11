@@ -24,15 +24,15 @@ class PhotoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => ['required', 'mimes:png,jpg,jpeg,mpeg'],
+            'image' => ['required', 'mimes:png,jpg,jpeg,bmp,tif'],
             'title' => ['string', 'nullable'],
         ];
     }
     public function messages()
     {
         return [
-            'image.required' =>'تصویر انتخاب نشده است',
-            'image.mimes' =>'تصویر باید شامل :values  باشد',
+            'image.required' =>'تصویر انتخاب نشده است.',
+            'image.mimes' =>'فرمت تصویر باید شامل :values  باشد.',
 
         ];
     }

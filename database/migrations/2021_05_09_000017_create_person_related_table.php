@@ -15,9 +15,14 @@ class CreatePersonRelatedTable extends Migration
     {
         Schema::create('person_related', function (Blueprint $table) {
 //            $table->id();
-            $table->foreignId('person_id')->constrained('persons','id');
+//            $table->foreignId('person_id')->constrained('persons','id');
+//            $table->integer('id',true);
+
             $table->foreignId('related_id')->constrained('persons','id');
+
             $table->foreignId('individual_id')->constrained('individuals','id')->comment('نسبت با فرد');
+
+            $table->foreignId('person_id')->constrained('persons','id')->onDelete('cascade');
 
             $table->text('description')->nullable()->comment('توضیحات');
 

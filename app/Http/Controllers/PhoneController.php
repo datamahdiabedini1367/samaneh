@@ -3,119 +3,141 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PhoneStoreRequest;
+use App\Http\Requests\UpdatePhoneRequest;
 use App\Models\Company;
-use App\Models\Person;
 use App\Models\Phone;
+use App\Models\Person;
+use App\Rules\UniqueOtherSelf;
 use Illuminate\Http\Request;
 
 class PhoneController extends Controller
 {
-    public function check(Request $request,$itemId)
+    public function check(Request $request, $itemId)
     {
-//        dd($request->all());
         $phoneIsUsed = Phone::query()
-            ->where('value',$request->get('phone'))
-            ->where('phone_id','!=',$itemId)
+            ->where('value', $request->get('phone'))
+            ->where('phone_id', '!=', $itemId)
             ->exists();
 
-        if ($phoneIsUsed){
-            return response([
-                'msg_error'=>"این شماره تماس قبلا در سامانه ثبت شده است",
-            ],200);
-        }else{
-            return response(['msg_error'=>''],200);
-        }
-    }
-
-    public function index()
-    {
-        //
-    }
-
-
-    public function create()
-    {
-        $company = new Company();
-        return view('contactBook.contact', [
-            'type' => 'company',
-        ]);
-    }
-
-
-    public function store(PhoneStoreRequest $request)
-    {
-        $phone_type = $request->get('phoneType') == 'company' ? Company::class : Person::class;
-        $phone_id = $request->get('phoneId');
-        $phoneInsert = Phone::query()->create([
-            'value' => $request->get('value'),
-            'phone_type' => $phone_type,
-            'phone_id' => $phone_id,
-        ]);
-        if ($phoneInsert) {
-            return response([
-                'count' => Phone::query()->where('phone_id', $phone_id)->where('phone_type', $phone_type)->count(),
-                'phoneInsert' => $phoneInsert,
-            ], 200);
+        if ($phoneIsUsed) {
+            return response(['msg_error' => "این ایمیل قبلا در سامانه ثبت شده است"]);
         } else {
-            return response([
-                'error' => 'این شماره تماس قبلا ثبت شده است',
-            ], 403);
+            return response(['msg_error' => '']);
         }
-    }
-
-
-    public function show(Phone $phone)
-    {
-        //
     }
 
     public function edit(Phone $phone)
     {
-        //
-    }
-
-
-    public function update(Request $request, Phone $phone)
-    {
-
-        $isAvailable = Phone::query()->where('phone_id', '!=', $request->get('dataId'))
-            ->where('value', $request->get('value'))->exists();
-
-        $isAvailableForThisItem = Phone::query()
-            ->where('phone_id', $request->get('dataId'))
-            ->where('value', $request->get('value'))
-            ->where('phone_type', $phone->phone_type)
-            ->exists();
-        $output=$phone->value;
-        $msg='';
-
-        if ($isAvailable) {
-            $msg ='این شماره تماس تکراری است.';
-        } elseif ($phone->value == $request->get('value')) {
-            $msg = 'این همان شماره تماس قبلی است شماره تماس جدید را وارد کنید.';
-        } else if($isAvailableForThisItem){
-            $msg = 'این شماره تماس قبلا در همین جدول ذخیره شده و نمی شه یک شماره تماس را دوبار در جدول ذخیره کرد';
+        if ($phone->phone_type == Company::class){
+            $company = Company::query()->whereId($phone->phone_id)->first();
+            $type='company';
+            $title = $company->name;
+        }else if($phone->phone_type == Person::class){
+            $person = Person::query()->whereId($phone->phone_id)->first();
+            $title = $person->firstName . '  ' . $person->lastName;
+            $type='persons';
         }else{
-            $phone->update([
-                'value' => $request->get('value'),
-            ]);
-            $output=$phone->value;
+            return abort(403);
         }
 
-
-        return response([
-            'value' => $output,
-            'msg'=>$msg
-        ], 200);
+        return view('pages.common.phones.edit',[
+            'phone'=>$phone,
+            'item'=>$phone->phone_id,
+            'type'=>$type,
+            'title'=>$title
+        ]);
 
     }
 
+    public function update(UpdatePhoneRequest $request, Phone $phone)
+    {
+        $this->validate($request,
+            ['value' => new UniqueOtherSelf('phones', 'value', $phone->id, " این شماره قبلا در سیستم ثبت شده است.")]
+        );
+        if ($phone->phone_type == Company::class){
+            $company = Company::query()->whereId($phone->phone_id)->first();
+            $type='company';
+            $title = $company->name;
+        }else if($phone->phone_type == Person::class){
+            $person = Person::query()->whereId($phone->phone_id)->first();
+            $title = $person->firstName . '  ' . $person->lastName;
+            $type='persons';
+        }else{
+            return abort(403);
+        }
+        $phone->update([
+            'value' => $request->get('value'),
+        ]);
+
+        return redirect(route('phone.show',[$type,$phone->phone_id]));
+    }
+
+    public function show($type, $data)
+    {
+        if ($type == 'company') {
+            $company = Company::query()->whereId($data)->first();
+            return view('pages.common.phones.show', [
+                'type' => $type,
+                'title' => $company->name,
+                'item' => $company,
+            ]);
+        }
+        if ($type == 'persons') {
+            $person = Person::query()->whereId($data)->first();
+            return view('pages.common.phones.show', [
+                'type' => $type,
+                'title' => $person->firstName . '  ' . $person->lastName,
+                'item' => $person,
+            ]);
+        }
+    }
+
+    public function create($type, $item)
+    {
+        if ($type == 'company') {
+            $company = Company::query()->whereId($item)->first();
+            return view('pages.common.phones.create', [
+                'type' => $type,
+                'dataId' => $item,
+                'title' => $company->name,
+                'item' => $company,
+            ]);
+        }
+        if ($type == 'persons') {
+            $person = Person::query()->whereId($item)->first();
+            return view('pages.common.phones.create', [
+                'type' => $type,
+                'dataId' => $item,
+                'title' => $person->firstName . '  ' . $person->lastName,
+                'item' => $person,
+            ]);
+        }
+    }
+
+    public function store(PhoneStoreRequest $request, $type, $data)
+    {
+        if ($type == 'company') {
+            $phone_type = Company::class;
+        }else if($type == 'persons') {
+            $phone_type = Person::class;
+        }else{
+            return abort(404);
+        }
+
+        $phoneInsert = Phone::query()->create([
+            'value' => $request->get('value'),
+            'phone_type' => $phone_type,
+            'phone_id' => $data,
+        ]);
+
+        return redirect(route('phone.show',[$type,$data]));
+    }
 
     public function destroy(Phone $phone)
     {
         $phone->delete();
-        return response([
-            'msg'=>"حذف با موفقیت انجام شد",
-        ],200);
+        return redirect()->back();
     }
+
+
 }

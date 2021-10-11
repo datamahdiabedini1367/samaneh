@@ -15,7 +15,8 @@ class CreateEducationalBackgroundsTable extends Migration
     {
         Schema::create('educational_backgrounds', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('person_id')->constrained('persons','id');
+//            $table->foreignId('person_id')->constrained('persons','id');
+            $table->foreignId('person_id')->constrained('persons','id')->onDelete('cascade');
 
             $table->string('grade',50)->comment('مقطع تحصیلی');
             $table->string('major',100)->nullable()->comment('رشته تحصیلی');

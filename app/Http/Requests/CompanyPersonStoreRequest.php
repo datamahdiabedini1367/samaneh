@@ -15,15 +15,23 @@ class CompanyPersonStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            "startDate" => ['date', 'nullable', 'before:today'],
+            "endDate" => ['date', 'nullable', 'after:startDate', 'before:today'],
+            "semat" => ['string', 'nullable'],
+            "section" => ['string', 'nullable'],
+            "reasonLeavingJob" => ['string', 'nullable'],
         ];
     }
 
-    protected function prepareForValidation()
+    public function messages()
     {
-        $this->merge([
-//            'startDate' => convert_date($this->startDate,'jalali'),
-//            'endDate' => convert_date($this->endDate,'jalali'),
-        ]);
+        return [
+            'company_id.exists'=>'شرکت مورد نظر در لیست شرکت ها نیست',
+            'startDate.before' => 'تاریخ شروع به کار باید قبل از امروز باشد',
+            'endDate.before' => 'تاریخ اتمام کار باید قبل از امروز باشد',
+            'endDate.after' => 'تاریخ اتمام کار باید بعد از تاریخ شروع به کار باشد',
+
+        ];
     }
+
 }

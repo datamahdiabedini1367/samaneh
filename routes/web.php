@@ -1,26 +1,28 @@
 <?php
 
 use App\Http\Controllers\Auth\RegisterationController;
-use App\Http\Controllers\Company\CompanyController;
-use App\Http\Controllers\Company\CompanyPersonController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CompanyPersonController;
 use App\Http\Controllers\ContactController;
-use App\Http\Controllers\CyberSpaceController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EducationalController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\ExperienceController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PersonController;
 use App\Http\Controllers\PersonRelatedController;
 use App\Http\Controllers\PhoneController;
 use App\Http\Controllers\PhotoContorller;
-use App\Http\Controllers\Project\ProjectCompanyController;
-use App\Http\Controllers\Project\ProjectController;
-use App\Http\Controllers\Project\ProjectPersonController;
-use App\Http\Controllers\Project\ProjectUserController;
+use App\Http\Controllers\ProjectCompanyController;
+use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\ProjectPersonController;
+use App\Http\Controllers\ProjectUserController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
-//------------------------------------------------------------
+//***************************************************
 Route::middleware('guest')->group(function () {
 
     Route::get('/login', [RegisterationController::class, 'createShowLoginForm'])->name('loginForm');
@@ -30,110 +32,141 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
 
-    Route::get('/logout', [RegisterationController::class, 'logout'])->name('logout');
-    Route::get('/signup', [RegisterationController::class, 'create'])->name('signup');
-    Route::post('/register', [RegisterationController::class, 'store'])->name('register');
 
+
+
+    Route::get('items/{type}/photos/{id}', [PhotoContorller::class, 'index'])->name('items.photos.index');
+    Route::post('gallery/{type}/item/{id}', [PhotoContorller::class, 'store'])->name('gallery.item.store');
+    Route::delete('gallery/{photo}', [PhotoContorller::class, 'destroy'])->name('items.photos.destroy');
+
+
+    Route::get('/account/{type}/show/{data}', [AccountController::class, 'show'])->name('account.show');
+    Route::get('/account/{type}/create/{data}', [AccountController::class, 'create'])->name('account.create');
+    Route::post('/account/{type}/store/{data}', [AccountController::class, 'store'])->name('account.store');
+    Route::get('/account/edit/{account}', [AccountController::class, 'edit'])->name('account.edit');
+    Route::patch('/account/update/{account}', [AccountController::class, 'update'])->name('account.update');
+    Route::delete('/account/{account}/delete', [AccountController::class, 'destroy'])->name('account.delete');
+
+
+    //-------------------------Emails---------------------
+    Route::get('/email/{type}/show/{data}', [EmailController::class, 'show'])->name('email.show');
+    Route::get('/email/{type}/create/{data}', [EmailController::class, 'create'])->name('email.create');
+    Route::post('/email/{type}/store/{data}', [EmailController::class, 'store'])->name('email.store');
+    Route::get('/email/edit/{email}', [EmailController::class, 'edit'])->name('email.edit');
+    Route::patch('/email/update/{email}', [EmailController::class, 'update'])->name('email.update');
+    Route::delete('/email/{email}', [EmailController::class, 'destroy'])->name('email.delete');
+    //--------------------------Phones--------------------
+    Route::get('/phone/{type}/show/{data}', [PhoneController::class, 'show'])->name('phone.show');
+    Route::get('/phone/{type}/create/{data}', [PhoneController::class, 'create'])->name('phone.create');
+    Route::post('/phone/{type}/store/{data}', [PhoneController::class, 'store'])->name('phone.store');
+    Route::get('/phone/edit/{phone}', [PhoneController::class, 'edit'])->name('phone.edit');
+    Route::patch('/phone/update/{phone}', [PhoneController::class, 'update'])->name('phone.update');
+    Route::delete('/phone/{phone}', [PhoneController::class, 'destroy'])->name('phone.delete');
+    //----------------------------------------------------
+    Route::resource('', AccountController::class)->except('store');
+
+
+//----------------------------Project-----------------------------
+
+    Route::get('projects/export', [ProjectController::class, 'export'])->name('projects.export');
+    Route::get('projects/execlExport/{project}', [ProjectController::class, 'exportOne'])->name('projects.exportOne');
 
     Route::resource('projects', ProjectController::class);
 
-    Route::resource('accounts', CyberSpaceController::class)->except(['store', 'index']);
-    Route::post('/accounts/{type}/{id}', [CyberSpaceController::class, 'store'])->name('accounts.store');
-//Route::resource('items.photos', PhotoContorller::class);
-    Route::get('items/{type}/photos/{id}', [PhotoContorller::class, 'index'])->name('items.photos.index');
-// GET|HEAD  | items/{item}/photos                     | items.photos.index             | App\Http\Controllers\PhotoContorller@index                            | web        |
-    Route::post('gallery/{type}/item/{id}', [PhotoContorller::class, 'store'])->name('gallery.item.store');
-// POST      | items/{item}/photos                     | items.photos.store             | App\Http\Controllers\PhotoContorller@store                            | web        |
-// GET|HEAD  | items/{item}/photos/create              | items.photos.create            | App\Http\Controllers\PhotoContorller@create                           | web        |
-// PUT|PATCH | items/{item}/photos/{photo}             | items.photos.update            | App\Http\Controllers\PhotoContorller@update
-//                           | web        |
-    Route::delete('gallery/{photo}', [PhotoContorller::class, 'destroy'])->name('items.photos.destroy');
-// DELETE    | items/{item}/photos/{photo}             | items.photos.destroy           | App\Http\Controllers\PhotoContorller@destroy                          | web        |
-// GET|HEAD  | items/{item}/photos/{photo}             | items.photos.show              | App\Http\Controllers\PhotoContorller@show                             | web        |
-// GET|HEAD  | items/{item}/photos/{photo}/edit        | items.photos.edit              | App\Http\Controllers\PhotoContorller@edit                             | web        |
-//
 
+//----------------------------Person-----------------------------
+    Route::get('persons/project/{person}',[PersonController::class,'list_project'])->name("personProject.create");
 
-    Route::get('/contact/{type}/create/{data}', [ContactController::class, 'create'])->name('contact.create');
-    Route::get('/syberspace/{type}/create/{data}', [CyberSpaceController::class, 'create'])->name('syberspace.create');
-
-
-    Route::resource('users', UserController::class);
-    Route::resource('emails', EmailController::class);
-//| GET|HEAD  | emails                                  | emails.index                   | App\Http\Controllers\EmailController@index                            | web        |
-//| POST      | emails                                  | emails.store                   | App\Http\Controllers\EmailController@store                            | web        |
-//| GET|HEAD  | emails/create                           | emails.create                  | App\Http\Controllers\EmailController@create                           | web        |
-//| GET|HEAD  | emails/{email}                          | emails.show                    | App\Http\Controllers\EmailController@show                             | web        |
-//| PUT|PATCH | emails/{email}                          | emails.update                  | App\Http\Controllers\EmailController@update                           | web        |
-//| DELETE    | emails/{email}                          | emails.destroy                 | App\Http\Controllers\EmailController@destroy                          | web        |
-//| GET|HEAD  | emails/{email}/edit                     | emails.edit                    | App\Http\Controllers\EmailController@edit                             | web        |
-
-//|  POST      | accounts                | accounts.store     | App\Http\Controllers\CyberSpaceController@store
-//|  GET|HEAD  | accounts                | accounts.index     | App\Http\Controllers\CyberSpaceController@index
-//|  GET|HEAD  | accounts/create         | accounts.create    | App\Http\Controllers\CyberSpaceController@create
-//|  DELETE    | accounts/{account}      | accounts.destroy   | App\Http\Controllers\CyberSpaceController@destroy
-//|  PUT|PATCH | accounts/{account}      | accounts.update    | App\Http\Controllers\CyberSpaceController@update
-//|  GET|HEAD  | accounts/{account}      | accounts.show      | App\Http\Controllers\CyberSpaceController@show
-//|  GET|HEAD  | accounts/{account}/edit | accounts.edit      | App\Http\Controllers\CyberSpaceController@edit
-    Route::get('/educational/create/{person}', [EducationalController::class, 'create'])->name('educational.create');
-    Route::post('/educational/store/{person}', [EducationalController::class, 'store'])->name('educational.store');
-    Route::delete('/educational/{educational}/{person}', [EducationalController::class, 'destroy'])->name('educational.destroy');
-    Route::patch('/educational/{educational}/{person}', [EducationalController::class, 'update'])->name('educational.update');
-
-
-    Route::resource('', CyberSpaceController::class)->except('store');
-
-
-    Route::resource('phones', PhoneController::class);
-    Route::resource('companies', CompanyController::class);
+    Route::get('persons/export', [PersonController::class, 'export'])->name('persons.export');
+    Route::get('persons/execlExport/{person}', [PersonController::class, 'exportOne'])->name('persons.exportOne');
+    Route::get('persons/personRelatedExport/{person}', [PersonRelatedController::class, 'exportPersonRelated'])->name('persons.exportPersonRelated');
+    Route::get('persons/personEducationalExport/{person}', [EducationalController::class, 'exportPersonEducational'])->name('person.exportPersonEducational');
     Route::resource('persons', PersonController::class);
 
 
-    Route::get('person/related/{person}', [PersonRelatedController::class, 'create'])->name('person.related.create');
-    Route::post('person/related/{person}', [PersonRelatedController::class, 'store'])->name('person.related.store');
-    Route::delete('person/related/{person}/{related}', [PersonRelatedController::class, 'destroy'])->name('person.related.delete');
-    Route::patch('person/related/{person}/{related}', [PersonRelatedController::class, 'update'])->name('person.related.update');
+    Route::get('persons/related/{person}', [PersonRelatedController::class, 'show'])->name('persons.related.show');
+    Route::get('persons/related/create/{person}', [PersonRelatedController::class, 'create'])->name('persons.related.create');
+
+    Route::post('persons/related/{person}', [PersonRelatedController::class, 'store'])->name('persons.related.store');
+    Route::delete('persons/related/{person}/{related}', [PersonRelatedController::class, 'destroy'])->name('persons.related.delete');
 
 
-    Route::resource('companies.photos', PhotoContorller::class);
+    Route::get('persons/related/{person}/edit/{related}', [PersonRelatedController::class, 'edit'])->name('persons.related.edit');
+    Route::patch('persons/related/{person}/{related}', [PersonRelatedController::class, 'update'])->name('persons.related.update');
 
-    Route::get('/checkemail/{itemId}', [EmailController::class, 'check'])->name('checkemail');
+//    نمایش سوابق تحصیلی فرد
+    Route::get('/educational/show/{person}', [EducationalController::class, 'show'])->name('educational.show');
+    Route::get('/educational/create/{person}', [EducationalController::class, 'create'])->name('educational.create');
+    Route::post('/educational/store/{person}', [EducationalController::class, 'store'])->name('educational.store');
+    Route::get('/educational/{educational}/edit', [EducationalController::class, 'edit'])->name('educational.edit');
+    Route::patch('/educational/{educational}', [EducationalController::class, 'update'])->name('educational.update');
+    Route::delete('/educational/{educational}', [EducationalController::class, 'destroy'])->name('educational.destroy');
 
+//-----------------------سوابق شغلی
+    Route::get('/experience/show/{person}', [ExperienceController::class, 'experience_show'])->name('experience.show');
+    Route::get('/experience/create/{person}', [ExperienceController::class, 'experience_create'])->name('experience.create');
+    Route::post('/experience/store/{person}', [ExperienceController::class, 'experience_store'])->name('experience.store');
+    Route::get('/experience/edit/{id}', [ExperienceController::class, 'experience_edit'])->name('experience.edit');
+    Route::patch('/experience/{companyPerson}', [ExperienceController::class, 'experience_update'])->name('experience.update');
+    Route::delete('/experience/{id}', [ExperienceController::class, 'experience_destroy'])->name('experience.destroy');
+    Route::get('experience/execlExport/{person}', [ExperienceController::class, 'exportExperienceOne'])->name('experience.exportOne');
 
+//----------------------------Company-----------------------------
+    Route::get('companies/export', [CompanyController::class, 'export'])->name('companies.export');
+    Route::get('companies/execlExport/{company}', [CompanyController::class, 'exportOne'])->name('companies.exportOne');
+    Route::get('persons/personSavabeghExport/{person}', [CompanyPersonController::class, 'exportPersonSavabegh'])->name('persons.exportPersonSavabegh');
+
+    Route::resource('companies', CompanyController::class);
     Route::get('/companies/{company}/persons', [CompanyPersonController::class, 'index'])->name('companies.persons.index');
     Route::get('/companies/{company}/persons/create', [CompanyPersonController::class, 'create'])->name('companies.persons.create');
     Route::post('/companies/{company}/persons', [CompanyPersonController::class, 'store'])->name('companies.persons.store');
-    Route::get('/companies/{company}/persons/destroy', [CompanyPersonController::class, 'destroyForm'])->name('companies.persons.destroyForm');
+
     Route::delete('/companies/{company}/persons/{person}', [CompanyPersonController::class, 'destroy'])->name('companies.persons.destroy');
 
+    Route::get('/companies/{company}/persons/destroy', [CompanyPersonController::class, 'destroyForm'])->name('companies.persons.destroyForm');
+
+    Route::resource('companies.photos', PhotoContorller::class);
+
+//----------------------------User-----------------------------
+    Route::get('users/export', [UserController::class, 'export'])->name('users.export');
+
+    Route::resource('users', UserController::class);
+    Route::get('/logout', [RegisterationController::class, 'logout'])->name('logout');
+    Route::get('/signup', [RegisterationController::class, 'create'])->name('signup');
+    Route::post('/register', [RegisterationController::class, 'store'])->name('register');
+    Route::post('/checkUsername/{User:username}', [RegisterationController::class, 'checkUsername'])->name('checkUsername');
 
     Route::get('/user/projects', [UserController::class, 'myproject'])->name('user.projects');
     Route::post('/users/{user}/changeActivation', [UserController::class, "changeActivation"])->name('user.changeActivation');
-    Route::post('/users/{user}/changeRole/{role}', [UserController::class, "changeRole"])->name('user.changeRole');
-    Route::get('/user/index', [UserController::class, 'listUser'])->name('users.index');
+    Route::post('/users/changeRole/{user}', [UserController::class, "changeRole"])->name('user.changeRole');
+    Route::delete('/user/{user}',[UserController::class , 'destroy'])->name('user.delete');
+    /****/
+    Route::get('/user/index', [UserController::class, 'listUser'])->name('users.listUsers');
 
 
-    //------------ assign project to company/user/person ---------------
+
+//------------ assign project to company/user/persons ---------------
     Route::get('/project/{project}/user/assign', [ProjectUserController::class, 'assign'])->name('projects.users.assign');
     Route::post('/project/{project}/user/{user}', [ProjectUserController::class, 'store'])->name('projects.users.storeAssign');
 
-    Route::get('/project/{project}/person/assign', [ProjectPersonController::class, 'assign'])->name('projects.persons.assign');
-    Route::post('/project/{project}/person/{person}', [ProjectPersonController::class, 'store'])->name('projects.persons.storeAssign');
+    Route::get('/project/{project}/persons/assign', [ProjectPersonController::class, 'assign'])->name('projects.persons.assign');
+    Route::post('/project/{project}/persons/{person}', [ProjectPersonController::class, 'store'])->name('projects.persons.storeAssign');
+    Route::post('persons/{person}/project/{project}',[ProjectPersonController::class,'storePersonProject'])->name('personProject.store');
 
     Route::get('/project/{project}/company/assign', [ProjectCompanyController::class, 'assign'])->name('projects.companies.assign');
     Route::post('/project/{project}/company/{company}', [ProjectCompanyController::class, 'store'])->name('projects.companies.storeAssign');
-    //------------end assign project to company/user/person ---------------
 
-
-    //------------------Roles--------------------
+//------------------Roles--------------------
     Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
     Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
     Route::post('/roles/store', [RoleController::class, 'store'])->name('roles.store');
     Route::get('/roles/{role}', [RoleController::class, 'edit'])->name('roles.edit');
     Route::patch('/roles/{role}', [RoleController::class, 'update'])->name('roles.update');
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->name('roles.delete');
-
     Route::get('/', [HomeController::class, 'index'])->name('index');
+
+    //--------------------dashboard
+    Route::get('/dashboard',[DashboardController::class,'index'])->name('dashboard');
 });
 
 

@@ -17,6 +17,7 @@ class CreatePermissionsTable extends Migration
             $table->id();
             $table->string('title')->unique();
             $table->text('description')->nullable();
+            $table->foreignId('group_id')->constrained('permission_groups','id')->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ class Project extends Model
     protected $fillable = ['name', 'startDate', 'endDate', 'description'];
     protected $table = 'projects';
 
+    protected $perPage=5;
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'project_user','project_id','user_id')
@@ -58,16 +60,12 @@ class Project extends Model
 
     public function getStartDateProjectAttribute()
     {
-        $date = convert_date($this->startDate, 'gregorian');
-
-        return $date;
+        return convert_date($this->startDate, 'jalali');
     }
 
     public function getEndDateProjectAttribute()
     {
-        $date = convert_date($this->endDate, 'gregorian');
-
-        return $date;
+        return convert_date($this->endDate, 'jalali');
     }
 
 

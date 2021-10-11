@@ -37,11 +37,6 @@ class UserPolicy
         return $user->role->hasPermission('active_user');
     }
 
-    public function change_role(User $user)
-    {
-        return $user->role->hasPermission('change_role');
-    }
-
 
     public function update(User $user, User $model)
     {

@@ -31,7 +31,15 @@ class CompanyUpdateRequest extends FormRequest
     public function messages()
     {
         return [
+            'name.required'=>'نام شرکت اجباریست',
 //           'emails.*.value.email'=>"این ایمیل قبلا در سامانه ثبت شده است",
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+            $this->merge([
+                'registration_date' => convert_date($this->registration_date, 'gregorian'),
+            ]);
     }
 }

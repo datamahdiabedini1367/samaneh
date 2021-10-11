@@ -17,21 +17,36 @@ class PersonUpdateRequest extends FormRequest
     {
         return [
             'firstName' => ['required'],
-            'nikeName' => ['string','nullable'],
+            'nikeName' => ['string', 'nullable'],
             'lastName' => ['required'],
-            'fatherName' => ['string','nullable'],
-            'motherName' => ['string','nullable'],
+            'fatherName' => ['string', 'nullable'],
+            'motherName' => ['string', 'nullable'],
             'married' => ['in:0,1'],
-            'birthdate' => ['string','nullable'],
-            'birthdatePlace' => ['string','nullable'],
+            'birthdate' => ['string', 'nullable'],
+            'birthdatePlace' => ['string', 'nullable'],
             'gender' => ['in:0,1'],
-            'nationalCode' => ['string','nullable'],
-            'address' => ['string','nullable'],
-            'bio' => ['string','nullable'],
-            'entertainments' => ['string','nullable'],
-            'personalFavorites' => ['string','nullable'],
-            'politicalOrientation' => ['string','nullable'],
-            'languageUse' => ['string','nullable'],
+            'nationalCode' => ['string', 'nullable'],
+            'address' => ['string', 'nullable'],
+            'bio' => ['string', 'nullable'],
+            'entertainments' => ['string', 'nullable'],
+            'personalFavorites' => ['string', 'nullable'],
+            'politicalOrientation' => ['string', 'nullable'],
+            'languageUse' => ['string', 'nullable'],
         ];
+    }
+
+    public function messages()
+    {
+        return [
+            'firstName.required' => 'فیلد نام اجباریست.',
+            'lastName.required' => 'فیلد نام خانوادگی اجباریست.'
+        ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'birthdate' => convert_date($this->birthdate, 'gregorian'),
+        ]);
     }
 }

@@ -20,4 +20,10 @@ class ProjectPersonAssign extends FormRequest
             'persons.*'=>['exists:persons,id'],
         ];
     }
+    public function messages()
+    {
+        return [
+             'persons.*.exists'=>'فرد انتخاب شده در سیستم یافت نشد',
+        ];
+    }
 }

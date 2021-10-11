@@ -30,7 +30,7 @@ class PersonFactory extends Factory
             'fatherName' => $this->faker->firstNameMale,
             'motherName' => $this->faker->firstNameFemale,
             'married' => $this->faker->boolean,
-            'birthdate' => convert_date($this->faker->dateTime()->format('Y/m/d'), 'jalali'),
+            'birthdate' => convert_date($this->faker->dateTimeBetween('1300/01/01','1399/01/01')->format('Y/m/d'),'gregorian'),
             'birthdatePlace' => $this->faker->city,
             'gender' => array_rand([0,1]),
             'nationalCode' => substr($this->faker->creditCardNumber('MasterCard'),0,10),

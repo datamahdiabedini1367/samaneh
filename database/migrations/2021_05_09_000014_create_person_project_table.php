@@ -15,8 +15,8 @@ class CreatePersonProjectTable extends Migration
     {
         Schema::create('person_project', function (Blueprint $table) {
             $table->foreignId('project_id')->constrained('projects','id');
-            $table->foreignId('person_id')->constrained('persons','id');
-
+//            $table->foreignId('person_id')->constrained('persons','id');
+            $table->foreignId('person_id')->constrained('persons','id')->onDelete('cascade');
             $table->primary(['project_id','person_id']);
 
             $table->timestamps();

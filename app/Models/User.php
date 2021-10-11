@@ -13,6 +13,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable;
     use SoftDeletes;
+    protected $perPage=5;
 
 
     protected $fillable = [
@@ -44,6 +45,11 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function getActiveAttribute()
+    {
+        return $this->is_active ? 'فعال' : 'غیر فعال';
     }
 
 

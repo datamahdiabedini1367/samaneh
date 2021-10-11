@@ -26,8 +26,8 @@ class PhoneStoreRequest extends FormRequest
     {
         return [
             'value'=>['required','unique:phones,value','numeric'],
-            'phoneType'=>['required',Rule::in(['company', 'person']),],
-            'phoneId'=>['required','integer',]
+//            'phoneType'=>['required',Rule::in(['company', 'persons']),],
+//            'phoneId'=>['required','integer',]
         ];
     }
     public function messages()
@@ -35,6 +35,7 @@ class PhoneStoreRequest extends FormRequest
         return [
             'value.required'=>'شماره تماس وارد نشده است',
             'value.unique'=>'این شماره تماس قبلا ثبت شده است',
+            'value.numeric'=>'فقط اعداد می توانند در این فیلد وارد شود'
         ];
     }
 }

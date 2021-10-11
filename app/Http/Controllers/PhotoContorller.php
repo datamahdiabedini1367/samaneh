@@ -16,36 +16,32 @@ class PhotoContorller extends Controller
         $itemType = $type;
         $type = $this->firstItem($type, $id);
 
-        return view('photos.index', [
+        return view('pages.common.photos.index', [
             'itemType' => $itemType,
             'type' => $type,
         ]);
-
     }
 
     private function firstItem($type, $id)
     {
         if ($type == 'company') {
             $type = Company::query()->where('id', $id)->first();
-        } else if ($type == 'person') {
+        } else if ($type == 'persons') {
             $type = Person::query()->where('id', $id)->first();
         }
-
         return $type;
     }
 
-
-
     public function store(PhotoStoreRequest  $request, $type, $id)
     {
-        $path = $request->file('image')->store('public/image/'.$type.'/'.$id.'/');
+        $path = $request->file('image')->store('/public/image/'.$type.'/'.$id.'/');
 
         if ($type=='company') {
             $type = Company::class;
-        }else if ($type == 'person'){
+        }else if ($type == 'persons'){
             $type = Person::class;
         }else{
-            return ;
+            return null;
         }
 
         Photo::query()->create([

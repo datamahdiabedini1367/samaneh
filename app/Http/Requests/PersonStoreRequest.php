@@ -16,9 +16,9 @@ class PersonStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'firstName' => ['required'],
-            'nikeName' => ['string','nullable'],
-            'lastName' => ['required'],
+            'firstName' => ['required','string'],
+            'nikeName' => ['nullable','string'],
+            'lastName' => ['required','string'],
             'fatherName' => ['string','nullable'],
             'motherName' => ['string','nullable'],
             'married' => ['in:0,1'],
@@ -38,9 +38,19 @@ class PersonStoreRequest extends FormRequest
     {
         return [
             'firstName.required'=>"نام اجباریست",
+//            'nikeName.required'=>"نام مستعار اجباریست",
             'lastName.required'=>"نام خانوادگی اجباریست",
             'gender.required'=>"جنسیت انتخاب نشده است",
             'nationalCode.unique'=>"کد ملی تکراری است",
         ];
     }
+
+    protected function prepareForValidation()
+    {
+            $this->merge([
+                'birthdate' => convert_date($this->birthdate, 'gregorian'),
+            ]);
+    }
+
+
 }

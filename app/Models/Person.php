@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use function PHPUnit\Framework\isNull;
 
 class Person extends Model
 {
@@ -18,25 +19,30 @@ class Person extends Model
 
     protected $table = 'persons';
 
+    protected $perPage = 5;
+
     public function getGenderPersonAttribute()
     {
-        return $this->gender ? 'مرد' : 'زن';
+//        if (!is_null($this->gender)) {
+            return $this->gender ? 'مرد' : 'زن';
+//        }
+//        return  null;
+    }
+
+    public function getStartDateProjectAttribute()
+    {
+        return convert_date($this->startDate, 'jalali');
     }
 
     public function getMarriedPersonAttribute()
     {
-        return $this->married ? 'متاهل' : 'مجرد';
+
+            return $this->married ? 'متاهل' : 'مجرد';
     }
 
     public function getBirthdatePersonAttribute()
     {
-        $persian = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        $english = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-
-        $output = str_replace($english, $persian, $this->birthdate);
-        $date = convert_date($this->birthdate, 'gregorian');
-
-        return $output;
+        return convert_date($this->birthdate, 'jalali');
     }
 
     public function companies()
@@ -46,7 +52,7 @@ class Person extends Model
             'company_person',
             'person_id',
             'company_id')
-            ->withPivot(['reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
+            ->withPivot(['id','reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
             ->withTimestamps();
     }
 
@@ -103,6 +109,11 @@ class Person extends Model
 
     }
 
+    public function getIndividualTitle($individual_id)
+    {
+        $individual = Individual::query()->where('id', $individual_id)->first('title');
+        return $individual->title;
+    }
 
     public function addEmails(array $emails)
     {
@@ -140,16 +151,20 @@ class Person extends Model
         }
     }
 
-//    public function getPhonesAttribute(){
-//
-//@php
-//$phonesperson='';
-//foreach($person->phones as $phone){
-//$phonesperson=$phone->value.' - '.$phonesperson;
-//}
-//$phonesperson=substr($phonesperson, 0, -4);
-//@endphp
-//    }
+    public function workInCompany(Company $company)
+    {
+        return $this->companies()->withPivot(['id','reasonLeavingJob', 'startDate', 'endDate', 'semat', 'section', 'deleted_at'])
+            ->where('company_id', $company->id)
+            ->exists();
+
+    }
+
+    public function hasProject(Project $project)
+    {
+        return $this->projects()
+            ->where('id',$project->id)
+            ->exists();
+    }
 
 
 }

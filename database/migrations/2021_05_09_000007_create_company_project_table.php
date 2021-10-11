@@ -14,7 +14,10 @@ class CreateCompanyProjectTable extends Migration
     public function up()
     {
         Schema::create('company_project', function (Blueprint $table) {
-            $table->foreignId('company_id')->constrained('companies','id');
+//            $table->foreignId('company_id')->constrained('companies','id');
+            $table->foreignId('company_id')->constrained('companies','id')->onDelete('cascade');
+
+
             $table->foreignId('project_id')->constrained('projects','id');
 
             $table->primary(['company_id','project_id']);

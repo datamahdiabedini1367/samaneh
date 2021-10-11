@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -22,15 +23,17 @@ class AdminSeeder extends Seeder
             'title' => 'admin',
         ]);
 
+        $admin->permissions()->detach(Permission::all());
+
         $admin->permissions()->attach(Permission::all());
 
 
-        User::query()->insert([
-            'role_id' => $admin->id,
-            'username' => 'admin',
-            'is_active' => true,
-            'password' =>bcrypt('12345678'),
-
-        ]);
+//        User::query()->insert([
+//            'role_id' => $admin->id,
+//            'username' => 'admin',
+//            'is_active' => true,
+//            'password' =>bcrypt('12345678'),
+//
+//        ]);
     }
 }

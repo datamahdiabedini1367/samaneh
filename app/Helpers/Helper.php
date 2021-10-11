@@ -1,6 +1,32 @@
 <?php
 
-use Hekmatinasser\Verta\Verta;
+//use Hekmatinasser\Verta\Verta;
+
+
+if (!function_exists('hasPermission')) {
+
+    function hasPermission($permission)
+    {
+      return is_array(old('permissions')) ? in_array($permission, old('permissions')) : false ;
+    }
+}
+
+if (!function_exists('arrayTwoItem')) {
+
+
+    function arrayTwoItem($result)
+    {
+        $arr=[];
+        foreach ($result as $item){
+            $test = array_keys($item);
+            $arr[$item[$test[0]]]=$item[$test[1]];
+        }
+
+
+        return $arr;
+    }
+
+}
 
 if (!function_exists('convertEnglishToPersianNumber')) {
 
@@ -17,19 +43,37 @@ if (!function_exists('convertEnglishToPersianNumber')) {
 
 }
 
+if (!function_exists('digit')) {
+    function digit($number, $count)
+    {
+        if ($number < 10) {
+            return '0' . $number;
+        }
+        return $number;
+    }
+}
+
 if (!function_exists('convert_date')) {
     function convert_date($stringDate, $type)
     {
-        $date = convertEnglishToPersianNumber($stringDate);
-        $date = explode('/', $date);
+//        $date = convertEnglishToPersianNumber($stringDate);
+//        $date = explode('/', $date);
+//
+//        $convert = [];
+//        if (!empty($stringDate)) {
+//            if ($type == 'jalali') {
+//                $convert = \Hekmatinasser\Verta\Verta::getJalali($date[0], $date[1], $date[2]);
+//            } else if ($type == 'gregorian') {
+//                $convert = \Hekmatinasser\Verta\Verta::getGregorian($date[0], $date[1], $date[2]);
+//            }
+//            $convert[1] = digit($convert[1], 2);
+//            $convert[2] = digit($convert[2], 2);
+////            dd($convert,implode('/', $convert));
+//            return implode('/', $convert);
+//        } else {
+//            return null;
+//        }
 
-
-        $convert = '';
-        if ($type == 'jalali') {
-            $convert = Verta::getJalali($date[0], $date[1], $date[2]);
-        } else if ($type == 'gregorian') {
-            $convert = Verta::getGregorian($date[0], $date[1], $date[2]);
-        }
-        return implode('/', $convert);
+        return $stringDate;
     }
 }

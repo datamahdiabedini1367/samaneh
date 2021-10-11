@@ -28,4 +28,13 @@ class LoginRequest extends FormRequest
             'password'=>['required'],
         ];
     }
+
+    public function messages()
+    {
+       return [
+           'username.required'=>'نام کاربری اجباریست',
+           'username.exists'=>'چنین کاربری در سیستم وجود ندارد',
+           'password.required'=>'رمز عبور اجباریست',
+       ];
+    }
 }

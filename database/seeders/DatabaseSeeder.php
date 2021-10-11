@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
 //            ProjectsTableSeeder::class,
 //            CompaniesTableSeeder::class,
 //            PersonsTableSeeder::class,
-//            IndividualTableSeeder::class,
-//            AccountTypeTableSeeder::class,
+            IndividualTableSeeder::class,
+            AccountTypeTableSeeder::class,
             PermissonTableSeeder::class,
             AdminSeeder::class
         ]);

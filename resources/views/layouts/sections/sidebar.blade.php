@@ -55,7 +55,7 @@
                         </li>
                     @endcan
 
-                    @can('isAccess',Permission::query()->whereIn('title', ['list_projects','my_project'])->first())
+                    @can('isAccess',Permission::query()->whereIn('title',  ['list_projects','my_project'])->first())
                         <li class="nav-item has-treeview">
                             <a href="#" class="nav-link">
                                 <i class="nav-icon fas fa-gopuram"></i>

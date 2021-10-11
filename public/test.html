@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang = "en">
+<head>
+    <meta charset = "utf-8">
+    <title> This is an example for jQuery validate errorplacement function </title>
+    <!-- Using the jquery CDN -->
+    <script src = "https://www.webcodegeeks.com/wp-content/litespeed/localres/ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"> </script>
+    <!-- Using the jquery validate plugin CDN -->
+    <script src = "https://www.webcodegeeks.com/wp-content/litespeed/localres/cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"> </script>
+    <style>
+        .errorClass{ background : red;}
+    </style>
+</head>
+<body>
+<h3> This an example of validate errorplacement function: </h3>
+<form id = "form_id" action = "" method = "POST" name = "form_id">
+    First Name : <input type = "text" id = "first_name" class = "required" name = "first_name" placeholder = "" />
+    <br>
+    Last Name : <input type = "text" id = "last_name" class = "required" name = "last_name" placeholder = "" />
+    <br>
+    Email ID : <input type = "text" id = "email_id" class = "required" name = "email_id" placeholder = "" />
+    <br>
+    <input id="" class="" type="submit"> </input>
+</form>
+<script>
+    $( "#form_id" ).validate({
+        errorPlacement: function( error, element ) {
+// attrib nameof the field
+            var n = element.attr("name");
+            if (n == "first_name")
+                element.attr("placeholder", "Please enter your first name");
+            else if (n == "last_name")
+                element.attr("placeholder", "Please enter your last name");
+            else if (n == "email_id")
+                element.attr("placeholder", "Please enter your email id");
+        },
+        rules: {
+            first_name : {
+                minlength: 6,
+                required: true
+            },
+            last_name : {
+                minlength: 6,
+                required: true
+            },
+            email_address : {
+                minlength : 10,
+                required: true,
+                email: true
+            }
+        },
+        highlight: function(element) {
+// add a class "errorClass" to the element
+            $(element).addClass('errorClass');
+        },
+        unhighlight: function(element) {
+// class "errorClass" remove from the element
+            $(element).removeClass('errorClass');
+        },
+        submitHandler: function(form) {
+// now submit the form.
+        }
+    });
+</script>
+</body>
+</html>

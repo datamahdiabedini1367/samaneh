@@ -19,13 +19,13 @@ class DatabaseSeeder extends Seeder
         Schema::disableForeignKeyConstraints();
         $this->call([
             UsersTableSeeder::class,
-            ProjectsTableSeeder::class,
-            CompaniesTableSeeder::class,
-            PersonsTableSeeder::class,
-            IndividualTableSeeder::class,
-            AccountTypeTableSeeder::class,
+//            ProjectsTableSeeder::class,
+//            CompaniesTableSeeder::class,
+//            PersonsTableSeeder::class,
+//            IndividualTableSeeder::class,
+//            AccountTypeTableSeeder::class,
             PermissonTableSeeder::class,
-            AdminSeeder::class
+//            AdminSeeder::class
         ]);
         Schema::enableForeignKeyConstraints();
     }

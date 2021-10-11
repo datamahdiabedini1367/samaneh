@@ -24,7 +24,7 @@ class UsersTableSeeder extends Seeder
              'is_active'=>1,
              'password'=>$pass,
         ]);
-        $fakePosts = UserFactory::new()->count(20)->create();
+       // $fakePosts = UserFactory::new()->count(20)->create();
 
     }
 

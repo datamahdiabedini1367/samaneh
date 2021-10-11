@@ -68,7 +68,7 @@
                                     <li class="nav-item">
                                         <a href="{{route('projects.index')}}" class="nav-link">
                                             <i class="nav-icon fa fa-circle-o"></i>
-                                            <p>لیست پروژه</p>
+                                            <p>لیست پروژه1</p>
                                         </a>
                                     </li>
                                 @endcan
